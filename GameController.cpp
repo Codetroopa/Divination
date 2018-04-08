@@ -1,9 +1,16 @@
 #include "GameController.h"
-using namespace std;
+#include "Player.h"
+
+// Ctor to set up the game and its Players/Decks
+GameController::GameController(string p1, string p2, string d1, string d2) {
+    // if the deck string is empty, we should fall back to using the default deck
+    this->activePlayer = new Player(p1, d1);
+    this->nonActivePlayer = new Player(p1, d1);
+    this->board = new Board::Board();
+}
 
 void GameController::play() {
     string cmd;
-    board = new Board::Board();
 	displayHelpMessage();
 
 	while(cin >> cmd) {

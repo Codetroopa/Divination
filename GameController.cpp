@@ -3,6 +3,7 @@ using namespace std;
 
 void GameController::play() {
     string cmd;
+    board = new Board::Board();
 	displayHelpMessage();
 
 	while(cin >> cmd) {
@@ -15,10 +16,10 @@ void GameController::play() {
 		} else if (cmd == "end") {
 
 		} else if (cmd == "quit") {
-
+            break;
 		} else if (cmd == "draw") { // -testing only
 
-		} else if (cmd == "discard") { // -testing only
+	    } else if (cmd == "discard") { // -testing only
 
 		} else if (cmd == "attack") {
 
@@ -31,113 +32,9 @@ void GameController::play() {
 		} else if (cmd == "hand") {
 
 		} else if (cmd == "board") {
-
+            board->draw();
 		}
 	}
-	// Command interpreter loop
-	// while (cin >> cmd) {
-	// 	// Race selection
-	// 	if (!hasSelected) {
-	// 		if (cmd == "q") {
-	// 			break;
-	// 		}
-	// 		// For DLC purposes
-	// 		if (cmd == "dlc") {
-	// 			// Toggles fog of war
-	// 			if (Floor::dlc) {
-	// 				Floor::dlc = false;
-	// 				cout << "Turning off DLC" << endl;
-	// 			}
-	// 			else {
-	// 				Floor::dlc = true;
-	// 				cout << "Turning DLC on" << endl;
-	// 			}
-	// 		}
-	// 		// If a race is selected, begin the floor
-	// 		else if (cmd == "s") {
-	// 			string ch = "shade";
-	// 			floor = new Floor(0);
-	// 			floor->initialize(ch, this, file);
-	// 			floor->print();
-	// 			hasSelected = true;
-	// 		}
-	// 		else if (cmd == "d") {
-	// 			string ch = "drow";
-	// 			floor = new Floor(0);
-	// 			floor->initialize(ch, this, file);
-	// 			floor->print();
-	// 			hasSelected = true;
-	// 		}
-	// 		else if (cmd == "v") {
-	// 			string ch = "vampire";
-	// 			floor = new Floor(0);
-	// 			floor->initialize(ch, this, file);
-	// 			floor->print();
-	// 			hasSelected = true;
-	// 		}
-	// 		else if (cmd == "t") {
-	// 			string ch = "troll";
-	// 			floor = new Floor(0);
-	// 			floor->initialize(ch, this, file);
-	// 			floor->print();
-	// 			hasSelected = true;
-	// 		}
-	// 		else if (cmd == "g") {
-	// 			string ch = "goblin";
-	// 			floor = new Floor(0);
-	// 			floor->initialize(ch, this, file);
-	// 			floor->print();
-	// 			hasSelected = true;
-	// 		}
-	// 	}
-	// 	// reset
-	// 	else if (cmd == "r") {
-	// 		if (floor) {
-	// 			delete floor;
-	// 			floor = NULL;
-	// 		}
-	// 		hasSelected = false;
-	// 		printCharOptions();
-	// 		if (file) {
-	// 			delete file;
-	// 		}
-	// 		file = new fstream(fileName.c_str());
-	// 	}
-	// 	// quit
-	// 	else if (cmd == "q") {
-	// 		break;
-	// 	}
-	// 	else if (floor->getAlive() == false) {}
-	// 	// The normal commands that can be issued when the game has started
-	// 	// Checks all directions
-	// 	else if (cmd == "no" || cmd == "so" || cmd == "ea" || cmd == "we"
-	// 		|| cmd == "nw" || cmd == "ne" || cmd == "sw" || cmd == "se") {
-	// 		if (!floor) continue;
-	// 		floor->playerMove(cmd);
-	// 	}
-
-	// 	// Use potion
-	// 	else if (cmd == "u") {
-	// 		cin >> cmd;
-	// 		// Checks all directions
-	// 		if (cmd == "no" || cmd == "so" || cmd == "ea" || cmd == "we"
-	// 			|| cmd == "nw" || cmd == "ne" || cmd == "sw" || cmd == "se") {
-	// 			if (!floor) continue;
-	// 			floor->playerUse(cmd);
-	// 		}
-
-	// 	}
-	// 	// Attack a location
-	// 	else if (cmd == "a") {
-	// 		cin >> cmd;
-	// 		// Checks all directions
-	// 		if (cmd == "no" || cmd == "so" || cmd == "ea" || cmd == "we"
-	// 			|| cmd == "nw" || cmd == "ne" || cmd == "sw" || cmd == "se") {
-	// 			if (!floor) continue;
-	// 			floor->playerAttack(cmd);
-	// 		}
-	// 	}
-	// }
 }
 
 void GameController::displayHelpMessage() {

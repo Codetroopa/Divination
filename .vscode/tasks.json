@@ -8,7 +8,12 @@
             "type": "shell",
             "command": "g++",
             "args": [
-                "-g", "*.cpp", "-Iheaders", "-o", "divination.out"
+                "-g",
+                "*.cpp",
+                "-Iheaders",
+                "-o",
+                "divination.out",
+                "-std=c++11"
             ],
             "group": {
                 "kind": "build",

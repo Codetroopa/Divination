@@ -1,4 +1,4 @@
-#include "ascii_graphics.h"
+#include "AsciiGraphics.h"
 #include <sstream>
 
 static void prepare_for_replace(card_template_t &);
@@ -123,7 +123,7 @@ static card_template_t display_minion_general(card_template_t out,std::string na
   return out;
 }
 
-const card_template_t CARD_TEMPLATE_MINION_NO_ABILITY =
+card_template_t CARD_TEMPLATE_MINION_NO_ABILITY =
 #if SIMPLE_GRAPHICS == 0
       {"┏━━━━━━━━━━━━━━━━━━━━━━━━━┯━━━━━┓",
        "┃ ~NNNNNNNNNNNNNNNNNNNNN~ │ ~C~ ┃",
@@ -151,7 +151,7 @@ const card_template_t CARD_TEMPLATE_MINION_NO_ABILITY =
 #endif
 
 
-const card_template_t CARD_TEMPLATE_MINION_WITH_ABILITY =
+card_template_t CARD_TEMPLATE_MINION_WITH_ABILITY =
 #if SIMPLE_GRAPHICS == 0
       {"┏━━━━━━━━━━━━━━━━━━━━━━━━━┯━━━━━┓",
        "┃ ~NNNNNNNNNNNNNNNNNNNNN~ │ ~C~ ┃",
@@ -178,7 +178,7 @@ const card_template_t CARD_TEMPLATE_MINION_WITH_ABILITY =
        "|-------------------------------|"};
 #endif
 
-const card_template_t CARD_TEMPLATE_BORDER =
+card_template_t CARD_TEMPLATE_BORDER =
 #if SIMPLE_GRAPHICS == 0
       {"┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓",
        "┃                               ┃",
@@ -205,7 +205,7 @@ const card_template_t CARD_TEMPLATE_BORDER =
        "|-------------------------------|"};
 #endif
 
-const card_template_t CARD_TEMPLATE_EMPTY = 
+card_template_t CARD_TEMPLATE_EMPTY =
       {"                                 ",
        "                                 ",
        "                                 ",
@@ -218,7 +218,7 @@ const card_template_t CARD_TEMPLATE_EMPTY =
        "                                 ",
        "                                 "};
 
-const card_template_t CARD_TEMPLATE_RITUAL =
+card_template_t CARD_TEMPLATE_RITUAL =
 #if SIMPLE_GRAPHICS == 0
       {"┏━━━━━━━━━━━━━━━━━━━━━━━━━┯━━━━━┓",
        "┃ ~NNNNNNNNNNNNNNNNNNNNN~ │ ~C~ ┃",
@@ -245,7 +245,7 @@ const card_template_t CARD_TEMPLATE_RITUAL =
        "|-------------------------------|"};
 #endif
 
-const card_template_t CARD_TEMPLATE_SPELL = 
+card_template_t CARD_TEMPLATE_SPELL =
 #if SIMPLE_GRAPHICS == 0
       {"┏━━━━━━━━━━━━━━━━━━━━━━━━━┯━━━━━┓",
        "┃ ~NNNNNNNNNNNNNNNNNNNNN~ │ ~C~ ┃",
@@ -272,10 +272,10 @@ const card_template_t CARD_TEMPLATE_SPELL =
        "|-------------------------------|"};
 #endif
 
-const card_template_t CARD_TEMPLATE_ENCHANTMENT_WITH_ATTACK_DEFENCE = CARD_TEMPLATE_MINION_NO_ABILITY;
-const card_template_t CARD_TEMPLATE_ENCHANTMENT = CARD_TEMPLATE_SPELL;
+card_template_t CARD_TEMPLATE_ENCHANTMENT_WITH_ATTACK_DEFENCE = CARD_TEMPLATE_MINION_NO_ABILITY;
+card_template_t CARD_TEMPLATE_ENCHANTMENT = CARD_TEMPLATE_SPELL;
 
-const card_template_t PLAYER_1_TEMPLATE =
+card_template_t PLAYER_1_TEMPLATE =
 #if SIMPLE_GRAPHICS == 0
       {"┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓",
        "┃                               ┃",
@@ -302,7 +302,7 @@ const card_template_t PLAYER_1_TEMPLATE =
        "|-------------------------------|"};
 #endif
 
-const card_template_t PLAYER_2_TEMPLATE = 
+card_template_t PLAYER_2_TEMPLATE =
 #if SIMPLE_GRAPHICS == 0
       {"┏━━━━━┯━━━━━━━━━━━━━━━━━━━┯━━━━━┓",
        "┃~HH~ │                   │ ~MM~┃",
@@ -329,18 +329,19 @@ const card_template_t PLAYER_2_TEMPLATE =
        "|-------------------------------|"};
 #endif
 
-const std::vector<std::string> CENTRE_GRAPHIC = 
+std::vector<std::string> CENTRE_GRAPHIC =
 #if SIMPLE_GRAPHICS == 0
       {"╠═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣",
        "║                                                                                                                                                                     ║",
-       "║                                                     ███████╗ ██████╗ ██████╗  ██████╗███████╗██████╗ ██╗   ██╗                                                      ║",
-       "║                                                     ██╔════╝██╔═══██╗██╔══██╗██╔════╝██╔════╝██╔══██╗╚██╗ ██╔╝                                                      ║",
-       "║                                                     ███████╗██║   ██║██████╔╝██║     █████╗  ██████╔╝ ╚████╔╝                                                       ║",
-       "║                                                     ╚════██║██║   ██║██╔══██╗██║     ██╔══╝  ██╔══██╗  ╚██╔╝                                                        ║",
-       "║                                                     ███████║╚██████╔╝██║  ██║╚██████╗███████╗██║  ██║   ██║                                                         ║",
-       "║                                                     ╚══════╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝╚══════╝╚═╝  ╚═╝   ╚═╝                                                         ║",
+       "║                                                           ____ _____     _____ _   _    _  _____ ___ ___  _   _                                                     ║",
+       "║                                                          |  _ \_ _\ \   / /_ _| \ | |  / \|_   _|_ _/ _ \| \ | |                                                    ║",
+       "║                                                          | | | | | \ \ / / | ||  \| | / _ \ | |  | | | | |  \| |                                                    ║",
+       "║                                                          | |_| | |  \ V /  | || |\  |/ ___ \| |  | | |_| | |\  |                                                    ║",
+       "║                                                          |____/___|  \_/  |___|_| \_/_/   \_\_| |___\___/|_| \_|                                                    ║",
        "║                                                                                                                                                                     ║",
-       "╠═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣"};
+       "║                                                                                                                                                                     ║",
+       "╠═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣",
+       };
 #else
       {"|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|",
        "|                                                                 _____                                                                                               |",
@@ -355,42 +356,42 @@ const std::vector<std::string> CENTRE_GRAPHIC =
 #endif
 
 
-const std::string EXTERNAL_BORDER_CHAR_UP_DOWN =
+std::string EXTERNAL_BORDER_CHAR_UP_DOWN =
 #if SIMPLE_GRAPHICS == 0
       "║";
 #else
       "|";
 #endif
 
-const std::string EXTERNAL_BORDER_CHAR_LEFT_RIGHT =
+std::string EXTERNAL_BORDER_CHAR_LEFT_RIGHT =
 #if SIMPLE_GRAPHICS == 0
       "═";
 #else
       "-";
 #endif
 
-const std::string EXTERNAL_BORDER_CHAR_TOP_LEFT =
+std::string EXTERNAL_BORDER_CHAR_TOP_LEFT =
 #if SIMPLE_GRAPHICS == 0
       "╔";
 #else
       "-";
 #endif
 
-const std::string EXTERNAL_BORDER_CHAR_TOP_RIGHT =
+std::string EXTERNAL_BORDER_CHAR_TOP_RIGHT =
 #if SIMPLE_GRAPHICS == 0
       "╗";
 #else
       "-";
 #endif
 
-const std::string EXTERNAL_BORDER_CHAR_BOTTOM_LEFT =
+std::string EXTERNAL_BORDER_CHAR_BOTTOM_LEFT =
 #if SIMPLE_GRAPHICS == 0
       "╚";
 #else
       "-";
 #endif
 
-const std::string EXTERNAL_BORDER_CHAR_BOTTOM_RIGHT =
+std::string EXTERNAL_BORDER_CHAR_BOTTOM_RIGHT =
 #if SIMPLE_GRAPHICS == 0
       "╝";
 #else

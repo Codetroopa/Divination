@@ -10,3 +10,7 @@ Minion::Minion(string name, int maxHp, int dmg) {
 void Minion::remove() {
 
 }
+
+card_template_t Minion::asCardTemplate() {
+    return display_minion_no_ability(name, cost, dmg, hp);
+}

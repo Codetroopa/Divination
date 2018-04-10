@@ -12,11 +12,28 @@ Deck::Deck(string deckFilePath, Player *p) {
     owner = p;
 
     // get cards from deck name
-    while(getline(file, cardName)) {
-        if(cardName == "Air Elemental") {
+    while (getline(file, cardName)) {
+        if (cardName == "Air Elemental") {
             cards.push_back(new Minion(cardName, 1, 1));
         } else if (cardName == "Earth Elemental") {
 
         }
     }
+
+    // initial shuffle
+    shuffle();
+}
+
+void Deck::shuffle() {
+    return;
+}
+
+bool Deck::hasCards() {
+    return cards.size() >= 1;
+}
+
+Card * Deck::drawCard() {
+    Card *card = cards.back();
+    cards.pop_back();
+    return card;
 }

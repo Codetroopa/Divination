@@ -16,6 +16,8 @@
         "string": "cpp",
         "string_view": "cpp",
         "algorithm": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "istream": "cpp",
+        "utility": "cpp"
     }
 }

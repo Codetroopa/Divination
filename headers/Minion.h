@@ -14,6 +14,7 @@ class Minion : public Card {
 
     Minion(string name, int maxHp, int dmg);
     void remove();
+    card_template_t asCardTemplate();
 };
 
 #endif

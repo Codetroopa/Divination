@@ -5,11 +5,27 @@
 GameController::GameController(string p1, string p2, string d1, string d2) {
     // if the deck string is empty, we should fall back to using the default deck
     this->activePlayer = new Player(p1, 1, d1);
-    this->nonActivePlayer = new Player(p1, 2, d1);
+    this->nonActivePlayer = new Player(p2, 2, d2);
+    this->turn = 1;
 }
 
 void GameController::nextTurn() {
+    if (whoseTurn() == 1) {
+        turn = 2;
+    } else {
+        turn = 1;
+    }
+    Player *hold = activePlayer;
+    activePlayer = nonActivePlayer;
+    nonActivePlayer = hold;
+    // TODO: end of turn effects here
 
+    // Now the new Active Player draws a card before finally beginning their turn
+    activePlayer->drawCard();
+}
+
+int GameController::whoseTurn() {
+    return turn;
 }
 
 void GameController::play() {
@@ -20,11 +36,13 @@ void GameController::play() {
 		// placeholder variables for selecting cards in hand / on the field
 		int i;
 		int j;
+        bool success;
 
 		if (cmd == "help") {
 			displayHelpMessage();
 		} else if (cmd == "end") {
             nextTurn();
+            drawBoard();
 		} else if (cmd == "quit") {
             break;
 		} else if (cmd == "draw") { // -testing only
@@ -34,7 +52,11 @@ void GameController::play() {
 		} else if (cmd == "attack") {
 
 		} else if (cmd == "play") {
-            activePlayer->playCard(1);
+            cin >> i;
+            success = activePlayer->playCard(i);
+            if (success) {
+                drawBoard();
+            }
 		} else if (cmd == "use") {
 
 		} else if (cmd == "inspect") {
@@ -50,6 +72,17 @@ void GameController::play() {
 // Draw the board in its entirety
 void GameController::drawBoard() {
     vector<card_template_t> displayCards;
+    Player * p1;
+    Player * p2;
+    int numMinions;
+
+    if (whoseTurn() == 1) {
+        p1 = activePlayer;
+        p2 = nonActivePlayer;
+    } else {
+        p1 = nonActivePlayer;
+        p2 = activePlayer;
+    }
 
     // Top border
     cout << EXTERNAL_BORDER_CHAR_TOP_LEFT;
@@ -58,36 +91,48 @@ void GameController::drawBoard() {
     }
     cout << EXTERNAL_BORDER_CHAR_TOP_RIGHT << endl;
 
-    // Draw Player 2's minions, ritual, Player portrait, and graveyard
+    // Draw Player 2's ritual, Player portrait, and graveyard
     displayCards.clear();
-    for (int i = 0; i < 5; i++) {
-        displayCards.push_back(CARD_TEMPLATE_BORDER);
-    }
-    displayCardTemplates(displayCards);
-    displayCards.clear();
-    for (int i = 0; i < 5; i++) {
-        displayCards.push_back(CARD_TEMPLATE_BORDER);
-    }
+    displayCards.push_back(CARD_TEMPLATE_BORDER);
+    displayCards.push_back(CARD_TEMPLATE_EMPTY);
+    displayCards.push_back(p2->asPortrait());
+    displayCards.push_back(CARD_TEMPLATE_EMPTY);
+    displayCards.push_back(CARD_TEMPLATE_BORDER);
     displayCardTemplates(displayCards);
 
+    // Draw Player 2's Minions
+    displayCards.clear();
+    for (vector<Minion *>::iterator it = p2->field.begin(); it < p2->field.end(); it++) {
+        displayCards.push_back((*it)->asCardTemplate());
+    }
+    numMinions = displayCards.size();
+    for (int i = 0; i < 5 - numMinions; i++) {
+        displayCards.push_back(CARD_TEMPLATE_BORDER);
+    }
+    displayCardTemplates(displayCards);
     // Display graphic in centre
     for(card_template_t::iterator it = CENTRE_GRAPHIC.begin(); it < CENTRE_GRAPHIC.end(); it++){
         cout << *it << endl;
     }
 
-    // Draw Player 1's minions, ritual, Player portrait, and graveyard
+    // Draw Player 1's Minions
     displayCards.clear();
-    for (int i = 0; i < 4; i++) {
-        displayCards.push_back(CARD_TEMPLATE_BORDER);
+    for (vector<Minion *>::iterator it = p1->field.begin(); it < p1->field.end(); it++) {
+        displayCards.push_back((*it)->asCardTemplate());
     }
-    if (activePlayer->field.size() == 1) {
-        displayCards.push_back((activePlayer->field.front())->asCardTemplate());
+    numMinions = displayCards.size();
+    for (int i = 0; i < 5 - numMinions; i++) {
+        displayCards.push_back(CARD_TEMPLATE_BORDER);
     }
     displayCardTemplates(displayCards);
+
+    // Draw Player 1's ritual, Player portrait, and graveyard
     displayCards.clear();
-    for (int i = 0; i < 5; i++) {
-        displayCards.push_back(CARD_TEMPLATE_BORDER);
-    }
+    displayCards.push_back(CARD_TEMPLATE_BORDER);
+    displayCards.push_back(CARD_TEMPLATE_EMPTY);
+    displayCards.push_back(p1->asPortrait());
+    displayCards.push_back(CARD_TEMPLATE_EMPTY);
+    displayCards.push_back(CARD_TEMPLATE_BORDER);
     displayCardTemplates(displayCards);
 
     // Bottom border
@@ -102,7 +147,7 @@ void GameController::drawBoard() {
 void GameController::displayCardTemplates(vector<card_template_t> &cards) {
     int numCards = cards.size();
     if (cards.size() != 5) {
-        cout << "Error: Need to display exactly 5 cards." << endl;
+        cout << "Error: Need to display exactly 5 cards. Given " << numCards << endl;
         exit(1);
     }
 

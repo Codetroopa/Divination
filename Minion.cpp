@@ -1,10 +1,11 @@
 #include "Minion.h"
 
-Minion::Minion(string name, int maxHp, int dmg) {
+Minion::Minion(string name, int cost, int dmg, int maxHp) {
     this->name = name;
     this->maxHp = maxHp;
     this->hp = maxHp;
     this->dmg = dmg;
+    this->cost = cost;
 }
 
 void Minion::remove() {

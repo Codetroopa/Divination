@@ -12,6 +12,7 @@ class GameController {
     // Private Variables
     Player *activePlayer;
     Player *nonActivePlayer;
+    int turn;
 
     // Private Methods
     void displayHelpMessage();
@@ -24,6 +25,7 @@ class GameController {
     void play();
     void drawBoard();
     void nextTurn();
+    int whoseTurn();                         // Whose turn is it anyway?
 };
 
 #endif

@@ -14,7 +14,7 @@ Deck::Deck(string deckFilePath, Player *p) {
     // get cards from deck name
     while (getline(file, cardName)) {
         if (cardName == "Air Elemental") {
-            cards.push_back(new Minion(cardName, 1, 1));
+            cards.push_back(new Minion(cardName, 0, 1, 1));
         } else if (cardName == "Earth Elemental") {
 
         }

@@ -6,13 +6,14 @@ using namespace std;
 // Ctor for setting up Player and its deck
 Player::Player(string name, int owner, string filePath) {
     this->hp = DEFAULT_HP;
+    this->maxHp = DEFAULT_HP;
     this->magic = DEFAULT_MAGIC;
     this->name = name;
     this->deck = new Deck(filePath, this);
     this->ownerNumber = owner;
 
     // Draw beginning cards from deck and add to hand
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 5; i++) {
         drawCard();
     }
 }
@@ -21,7 +22,7 @@ Player::Player(string name, int owner, string filePath) {
 void Player::drawCard() {
     if (hand.size() >= 5 || !deck->hasCards()) {
         // do nothing
-        cout << "Can't draw a card!" << endl;
+        cout << "Your hand is full!" << endl;
         return;
     }
     Card *drawnCard = deck->drawCard();
@@ -31,10 +32,14 @@ void Player::drawCard() {
 }
 
 // Play a card from hand at index i.
-void Player::playCard(int i) {
+bool Player::playCard(int i) {
     if (!validCardIndex(i)) {
-        cout << "You don't have a card at position " << i << endl;
-        return;
+        cout << "Error: You don't have a card at position " << i << endl;
+        return false;
+    }
+    if (field.size() >= 5) {
+        cout << "Your board is full!" << endl;
+        return false;
     }
 
     Minion *m = dynamic_cast<Minion*>(hand[i - 1]);
@@ -43,11 +48,12 @@ void Player::playCard(int i) {
     if (m) {
         addToField(m, i);
     }
+    return true;
 }
 
 // Play a card from hand at index i. Target Player p's jth minion
-void Player::playCard(int i, int p, int j) {
-
+bool Player::playCard(int i, int p, int j) {
+    return false;
 }
 
 void Player::addToField(Minion *m, int handPosition) {
@@ -62,5 +68,9 @@ void Player::addToField(Minion *m, int handPosition) {
 }
 
 bool Player::validCardIndex(int i) {
-    return hand.size() >= i;
+    return hand.size() >= i && i <= 5 && i > 0;
+}
+
+card_template_t Player::asPortrait() {
+    return display_player_card(ownerNumber, name, hp, magic);
 }

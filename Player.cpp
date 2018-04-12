@@ -20,9 +20,13 @@ Player::Player(string name, int owner, string filePath) {
 
 // Draw a card from this Player's deck and add it to our hand
 void Player::drawCard() {
-    if (hand.size() >= 5 || !deck->hasCards()) {
+    if (hand.size() >= 5) {
         // do nothing
         cout << "Your hand is full!" << endl;
+        return;
+    }
+    if (!deck->hasCards()) {
+        cout << "You are out of cards!" << endl;
         return;
     }
     Card *drawnCard = deck->drawCard();

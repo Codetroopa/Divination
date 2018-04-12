@@ -51,20 +51,34 @@ void GameController::play() {
             istringstream iss(cmd);
             if (!(iss >> i)) {
                 cout << "Error: Bad input: " << cmd << endl;
+                cout << ">";
                 continue;
             }
 
             if (iss.eof()) {
-
-            }
-
-            success = makeAttack(i);
-            if (success) {
-                drawBoard();
+                success = makeAttack(i);
+                if (success) {
+                    drawBoard();
+                }
+            } else {
+                if (!(iss >> j)) {
+                    cout << "Error: Bad input: " << cmd << endl;
+                    cout << ">";
+                    continue;
+                }
+                success = makeAttack(i, j);
+                if (success) {
+                    drawBoard();
+                }
             }
 		} else if (cmd == "play") {
-            cin >> cmd;
-            i = getInt(cmd);
+            getline(cin, cmd);
+            istringstream iss(cmd);
+            if (!(iss >> i)) {
+                cout << "Error: Bad input: " << cmd << endl;
+                cout << ">";
+                continue;
+            }
             success = activePlayer->playCard(i);
             if (success) {
                 drawBoard();
@@ -77,17 +91,36 @@ void GameController::play() {
 
 		} else if (cmd == "board") {
             drawBoard();
-		}
+		} else {
+            cout << "Invalid command. Type \"help\" for a list of commands." << endl;
+        }
+
+        // prompt for the user
+        cout << ">";
 	}
 }
 
 // Active Player attacks Opposing Player with minion i
 bool GameController::makeAttack(int i) {
-    if (activePlayer->field.size() < i && i > 0 && i <= 5) {
-        cout << "You don't have a minion at position " << i << endl;
+    if (activePlayer->field.size() < i || i < 0 || i > 5) {
+        cout << "Error: You don't have a minion at position " << i << endl;
         return false;
     }
     activePlayer->field[i - 1]->attack(nonActivePlayer);
+    return true;
+}
+
+// Active Player's minion i attacks Opposing Player's minion j
+bool GameController::makeAttack(int i, int j) {
+    if (activePlayer->field.size() < i || i <= 0 || i > 5) {
+        cout << "Error: You don't have a minion at position " << i << endl;
+        return false;
+    }
+    if (nonActivePlayer->field.size() < j || j <= 0 || j > 5) {
+        cout << "Error: There isn't an enemy minion to attack at position " << j << endl;
+        return false;
+    }
+    activePlayer->field[i - 1]->attack(nonActivePlayer->field[j - 1]);
     return true;
 }
 
@@ -119,7 +152,11 @@ void GameController::drawBoard() {
     displayCards.push_back(CARD_TEMPLATE_EMPTY);
     displayCards.push_back(p2->asPortrait());
     displayCards.push_back(CARD_TEMPLATE_EMPTY);
-    displayCards.push_back(CARD_TEMPLATE_BORDER);
+    if (p2->graveyard.size() > 0) {
+        displayCards.push_back(p2->graveyard.top()->asCardTemplate());
+    } else {
+        displayCards.push_back(CARD_TEMPLATE_BORDER);
+    }
     displayCardTemplates(displayCards);
 
     // Draw Player 2's Minions
@@ -154,7 +191,11 @@ void GameController::drawBoard() {
     displayCards.push_back(CARD_TEMPLATE_EMPTY);
     displayCards.push_back(p1->asPortrait());
     displayCards.push_back(CARD_TEMPLATE_EMPTY);
-    displayCards.push_back(CARD_TEMPLATE_BORDER);
+    if (p1->graveyard.size() > 0) {
+        displayCards.push_back(p1->graveyard.top()->asCardTemplate());
+    } else {
+        displayCards.push_back(CARD_TEMPLATE_BORDER);
+    }
     displayCardTemplates(displayCards);
 
     // Bottom border

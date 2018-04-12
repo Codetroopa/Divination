@@ -2,6 +2,7 @@
 #define PLAYER_H
 #include "AsciiGraphics.h"
 #include <vector>
+#include <stack>
 #include <iostream>
 
 using namespace std;
@@ -25,7 +26,7 @@ class Player {
     public:
     vector<Card *> hand;                // This Player's cards in hand
     vector<Minion *> field;             // This Player's minions in the field, and still alive
-    vector<Minion *> graveyard;         // This Player's minions that have been killed
+    stack<Minion *> graveyard;          // This Player's minions that have been killed
     int ownerNumber;                    // This is either 1 or 2 for Player 1 or 2
     Player(string name, int o, string deck);
     void drawCard();

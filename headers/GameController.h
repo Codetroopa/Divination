@@ -19,6 +19,7 @@ class GameController {
     void displayHelpMessage();
     void displayCardTemplates(vector<card_template_t> &cards);
     bool makeAttack(int i);
+    bool makeAttack(int i, int j);
 
     // Public Methods
     public:

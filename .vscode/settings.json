@@ -23,6 +23,8 @@
         "__nullptr": "cpp",
         "exception": "cpp",
         "new": "cpp",
-        "stdexcept": "cpp"
+        "stdexcept": "cpp",
+        "deque": "cpp",
+        "locale": "cpp"
     }
 }

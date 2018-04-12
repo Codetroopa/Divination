@@ -10,7 +10,7 @@ GameController::GameController(string p1, string p2, string d1, string d2) {
 }
 
 void GameController::nextTurn() {
-    if (whoseTurn() == 1) {
+    if (turn == 1) {
         turn = 2;
     } else {
         turn = 1;
@@ -20,12 +20,9 @@ void GameController::nextTurn() {
     nonActivePlayer = hold;
     // TODO: end of turn effects here
 
-    // Now the new Active Player draws a card before finally beginning their turn
+    // Now the new Active Player draws a card and gains magic before finally beginning their turn
     activePlayer->drawCard();
-}
-
-int GameController::whoseTurn() {
-    return turn;
+    activePlayer->gainMagic(1);
 }
 
 void GameController::play() {
@@ -50,9 +47,24 @@ void GameController::play() {
 	    } else if (cmd == "discard") { // -testing only
 
 		} else if (cmd == "attack") {
+            getline(cin, cmd);
+            istringstream iss(cmd);
+            if (!(iss >> i)) {
+                cout << "Error: Bad input: " << cmd << endl;
+                continue;
+            }
 
+            if (iss.eof()) {
+
+            }
+
+            success = makeAttack(i);
+            if (success) {
+                drawBoard();
+            }
 		} else if (cmd == "play") {
-            cin >> i;
+            cin >> cmd;
+            i = getInt(cmd);
             success = activePlayer->playCard(i);
             if (success) {
                 drawBoard();
@@ -69,6 +81,16 @@ void GameController::play() {
 	}
 }
 
+// Active Player attacks Opposing Player with minion i
+bool GameController::makeAttack(int i) {
+    if (activePlayer->field.size() < i && i > 0 && i <= 5) {
+        cout << "You don't have a minion at position " << i << endl;
+        return false;
+    }
+    activePlayer->field[i - 1]->attack(nonActivePlayer);
+    return true;
+}
+
 // Draw the board in its entirety
 void GameController::drawBoard() {
     vector<card_template_t> displayCards;
@@ -76,7 +98,7 @@ void GameController::drawBoard() {
     Player * p2;
     int numMinions;
 
-    if (whoseTurn() == 1) {
+    if (turn == 1) {
         p1 = activePlayer;
         p2 = nonActivePlayer;
     } else {

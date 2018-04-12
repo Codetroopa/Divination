@@ -56,6 +56,18 @@ bool Player::playCard(int i, int p, int j) {
     return false;
 }
 
+void Player::receiveDamage(int dmg) {
+    hp -= dmg;
+    if (hp <= 0) {
+        cout << name << " has been defeated!" << endl;
+        exit(0);
+    }
+}
+
+void Player::gainMagic(int amount) {
+    magic += amount;
+}
+
 void Player::addToField(Minion *m, int handPosition) {
     if (field.size() > 5) {
         cout << "Error: Your board is too full to play a minion!" << endl;

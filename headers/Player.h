@@ -31,6 +31,8 @@ class Player {
     void drawCard();
     bool playCard(int i);               // Play a card from hand at index i.
     bool playCard(int i, int p, int j); // Play a card from hand at index i. Target Player p's jth minion
+    void receiveDamage(int dmg);
+    void gainMagic(int amount);
     card_template_t asPortrait();       // Display as a card_template_t
 };
 

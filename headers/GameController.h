@@ -3,6 +3,7 @@
 #include "Minion.h"
 #include "AsciiGraphics.h"
 #include <iostream>
+#include <sstream>
 
 using namespace std;
 
@@ -12,11 +13,12 @@ class GameController {
     // Private Variables
     Player *activePlayer;
     Player *nonActivePlayer;
-    int turn;
+    int turn;                   // Whose turn is it anyways?
 
     // Private Methods
     void displayHelpMessage();
     void displayCardTemplates(vector<card_template_t> &cards);
+    bool makeAttack(int i);
 
     // Public Methods
     public:
@@ -25,7 +27,6 @@ class GameController {
     void play();
     void drawBoard();
     void nextTurn();
-    int whoseTurn();                         // Whose turn is it anyway?
 };
 
 #endif

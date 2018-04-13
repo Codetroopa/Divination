@@ -1,6 +1,7 @@
 #ifndef GAMECONTROLLER_H
 #define GAMECONTROLLER_H
 #include "Minion.h"
+#include "Ritual.h"
 #include "AsciiGraphics.h"
 #include <iostream>
 #include <sstream>
@@ -28,6 +29,7 @@ class GameController {
     void play();
     void drawBoard();
     void nextTurn();
+    void addMana(int amount, bool activePlayer = true);
 };
 
 #endif

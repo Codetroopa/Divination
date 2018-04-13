@@ -10,6 +10,7 @@ using namespace std;
 class Deck;
 class Card;
 class Minion;
+class Ritual;
 
 class Player {
     int maxHp;
@@ -17,16 +18,17 @@ class Player {
     int magic;
     string name;
     Deck *deck;
-    Card *ritual;
 
     // private methods
     bool validCardIndex(int i);
+    void playRitual(Ritual *r, int i);
     void addToField(Minion *m, int position);
 
     public:
     vector<Card *> hand;                // This Player's cards in hand
     vector<Minion *> field;             // This Player's minions in the field, and still alive
     stack<Minion *> graveyard;          // This Player's minions that have been killed
+    Ritual *ritual;
     int ownerNumber;                    // This is either 1 or 2 for Player 1 or 2
     Player(string name, int o, string deck);
     void drawCard();

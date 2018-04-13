@@ -1,6 +1,7 @@
 #include "Deck.h"
 #include "Card.h"
 #include "Player.h"
+#include "DarkRitual.h"
 #include "Minion.h"
 
 // Ctor to setup deck from a filename, using default deck otherwise.
@@ -15,6 +16,26 @@ Deck::Deck(string deckFilePath, Player *p) {
     while (getline(file, cardName)) {
         if (cardName == "Air Elemental") {
             cards.push_back(new Minion(p, cardName, 0, 1, 1));
+        } else if (cardName == "Earth Elemental") {
+            cards.push_back(new Minion(p, cardName, 3, 4, 4));
+        } else if (cardName == "Dark Ritual") {
+            cards.push_back(new DarkRitual(p, cardName, 0, 1, 5, "At the start of your turn, gain 1 magic"));
+        } else if (cardName == "Earth Elemental") {
+
+        } else if (cardName == "Earth Elemental") {
+
+        } else if (cardName == "Earth Elemental") {
+
+        } else if (cardName == "Earth Elemental") {
+
+        } else if (cardName == "Earth Elemental") {
+
+        } else if (cardName == "Earth Elemental") {
+
+        } else if (cardName == "Earth Elemental") {
+
+        } else if (cardName == "Earth Elemental") {
+
         } else if (cardName == "Earth Elemental") {
 
         }

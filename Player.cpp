@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "Deck.h"
 #include "Minion.h"
+#include "Ritual.h"
 using namespace std;
 
 // Ctor for setting up Player and its deck
@@ -11,6 +12,7 @@ Player::Player(string name, int owner, string filePath) {
     this->name = name;
     this->deck = new Deck(filePath, this);
     this->ownerNumber = owner;
+    this->ritual = NULL;
 
     // Draw beginning cards from deck and add to hand
     for (int i = 0; i < 5; i++) {
@@ -47,10 +49,15 @@ bool Player::playCard(int i) {
     }
 
     Minion *m = dynamic_cast<Minion*>(hand[i - 1]);
+    Ritual *r = dynamic_cast<Ritual*>(hand[i - 1]);
 
     // if this is true, we are playing a minion from the hand into the field
     if (m) {
         addToField(m, i);
+    } else if (r) {
+        playRitual(r, i);
+    } else {
+        return false;
     }
     return true;
 }
@@ -81,6 +88,15 @@ void Player::addToField(Minion *m, int handPosition) {
     // Safe to add minion to field and delete from hand
     field.push_back(m);
     hand.erase(hand.begin() + (handPosition - 1));
+}
+
+void Player::playRitual(Ritual *r, int idx) {
+    if (ritual != NULL) {
+        // here it is safe to destroy the old ritual and put in the new one
+        delete ritual;
+    }
+    ritual = r;
+    hand.erase(hand.begin() + (idx - 1));
 }
 
 bool Player::validCardIndex(int i) {

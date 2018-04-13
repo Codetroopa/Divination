@@ -2,10 +2,13 @@
 #define MINION_H
 #include "Card.h"
 #include "Player.h"
+#include "GameController.h"
 #include <iostream>
 #include <vector>
 
 using namespace std;
+
+class GameController;
 
 class Minion : public Card {
     int startHp;
@@ -26,7 +29,8 @@ class Minion : public Card {
     virtual bool attack(Minion *other);
     virtual bool attack(Player *other);
     virtual void receiveDamage(int amount);
-    virtual void endTurnEffects();
+    virtual void endOfTurnEffects(GameController *con);
+    virtual void startOfTurnEffects(GameController *con);
     virtual int calculateDamage();
     card_template_t asCardTemplate();
 };

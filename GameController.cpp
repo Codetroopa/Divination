@@ -15,17 +15,26 @@ void GameController::nextTurn() {
     } else {
         turn = 1;
     }
+    // End of turn triggers for active player
+    for (size_t i = 0; i < activePlayer->field.size(); i++) {
+        activePlayer->field[i]->endOfTurnEffects(this);
+    }
+    if (activePlayer->ritual) {
+        activePlayer->ritual->endOfTurnEffects(this);
+    }
+
+    // THE ACTUAL TURN ENDING HAPPENS HERE (Active Player switches)
     Player *hold = activePlayer;
     activePlayer = nonActivePlayer;
     nonActivePlayer = hold;
-    // TODO: end of turn effects here (in apnap order)
-    // First active player
+    // THE ACTUAL TURN ENDING HAPPENS HERE (Active Player switches)
+
+    // Start of turn triggers for new active player
     for (size_t i = 0; i < activePlayer->field.size(); i++) {
-        activePlayer->field[i]->endTurnEffects();
+        activePlayer->field[i]->startOfTurnEffects(this);
     }
-    // Then non-active player
-    for (size_t i = 0; i < nonActivePlayer->field.size(); i++) {
-        nonActivePlayer->field[i]->endTurnEffects();
+    if (activePlayer->ritual) {
+        activePlayer->ritual->startOfTurnEffects(this);
     }
 
     // Now the new Active Player draws a card and gains magic before finally beginning their turn
@@ -139,6 +148,15 @@ bool GameController::makeAttack(int i, int j) {
     return activePlayer->field[i - 1]->attack(nonActivePlayer->field[j - 1]);
 }
 
+void GameController::addMana(int amount, bool activePlayer) {
+    if (activePlayer == true) {
+        this->activePlayer->gainMagic(amount);
+    } else {
+        this->nonActivePlayer->gainMagic(amount);
+    }
+}
+
+
 // Draw the board in its entirety
 void GameController::drawBoard() {
     vector<card_template_t> displayCards;
@@ -163,7 +181,11 @@ void GameController::drawBoard() {
 
     // Draw Player 2's ritual, Player portrait, and graveyard
     displayCards.clear();
-    displayCards.push_back(CARD_TEMPLATE_BORDER);
+    if (p2->ritual != NULL) {
+        displayCards.push_back(p2->ritual->asCardTemplate());
+    } else {
+        displayCards.push_back(CARD_TEMPLATE_BORDER);
+    }
     displayCards.push_back(CARD_TEMPLATE_EMPTY);
     displayCards.push_back(p2->asPortrait());
     displayCards.push_back(CARD_TEMPLATE_EMPTY);
@@ -202,7 +224,11 @@ void GameController::drawBoard() {
 
     // Draw Player 1's ritual, Player portrait, and graveyard
     displayCards.clear();
-    displayCards.push_back(CARD_TEMPLATE_BORDER);
+    if (p1->ritual != NULL) {
+        displayCards.push_back(p1->ritual->asCardTemplate());
+    } else {
+        displayCards.push_back(CARD_TEMPLATE_BORDER);
+    }
     displayCards.push_back(CARD_TEMPLATE_EMPTY);
     displayCards.push_back(p1->asPortrait());
     displayCards.push_back(CARD_TEMPLATE_EMPTY);

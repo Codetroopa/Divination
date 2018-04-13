@@ -14,13 +14,25 @@ Minion::Minion(Player *p, string name, int cost, int dmg, int maxHp) {
 
 // Attack an opposing minion then get hit back. (APNAP ordering)
 bool Minion::attack(Minion *other) {
+    if (hasAttacked) {
+        cout << "The selected minion has already made a move this turn!" << endl;
+        return false;
+    }
     other->receiveDamage(calculateDamage());
     receiveDamage(other->calculateDamage());
+    hasAttacked = true;
+    return true;
 }
 
 // Attack the opposing Player
 bool Minion::attack(Player *p) {
+    if (hasAttacked) {
+        cout << "The selected minion has already made a move this turn!" << endl;
+        return false;
+    }
     p->receiveDamage(calculateDamage());
+    hasAttacked = true;
+    return true;
 }
 
 int Minion::calculateDamage() {
@@ -53,8 +65,12 @@ void Minion::die() {
     dmg = startDmg;
 }
 
-void Minion::endTurnEffects() {
+void Minion::endOfTurnEffects(GameController *con) {
     hasAttacked = false;
+}
+
+void Minion::startOfTurnEffects(GameController *con) {
+
 }
 
 card_template_t Minion::asCardTemplate() {

@@ -9,20 +9,17 @@ Minion::Minion(Player *p, string name, int cost, int dmg, int maxHp) {
     this->dmg = dmg;
     this->cost = cost;
     this->player = p;
-}
-
-void Minion::remove() {
-
+    this->hasAttacked = false;
 }
 
 // Attack an opposing minion then get hit back. (APNAP ordering)
-void Minion::attack(Minion *other) {
+bool Minion::attack(Minion *other) {
     other->receiveDamage(calculateDamage());
     receiveDamage(other->calculateDamage());
 }
 
 // Attack the opposing Player
-void Minion::attack(Player *p) {
+bool Minion::attack(Player *p) {
     p->receiveDamage(calculateDamage());
 }
 
@@ -54,6 +51,10 @@ void Minion::die() {
     player->field.erase(fieldLocation(player->field));
     hp = startHp;
     dmg = startDmg;
+}
+
+void Minion::endTurnEffects() {
+    hasAttacked = false;
 }
 
 card_template_t Minion::asCardTemplate() {

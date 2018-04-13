@@ -18,7 +18,15 @@ void GameController::nextTurn() {
     Player *hold = activePlayer;
     activePlayer = nonActivePlayer;
     nonActivePlayer = hold;
-    // TODO: end of turn effects here
+    // TODO: end of turn effects here (in apnap order)
+    // First active player
+    for (size_t i = 0; i < activePlayer->field.size(); i++) {
+        activePlayer->field[i]->endTurnEffects();
+    }
+    // Then non-active player
+    for (size_t i = 0; i < nonActivePlayer->field.size(); i++) {
+        nonActivePlayer->field[i]->endTurnEffects();
+    }
 
     // Now the new Active Player draws a card and gains magic before finally beginning their turn
     activePlayer->drawCard();
@@ -115,8 +123,7 @@ bool GameController::makeAttack(int i) {
         cout << "Error: You don't have a minion at position " << i << endl;
         return false;
     }
-    activePlayer->field[i - 1]->attack(nonActivePlayer);
-    return true;
+    return activePlayer->field[i - 1]->attack(nonActivePlayer);
 }
 
 // Active Player's minion i attacks Opposing Player's minion j
@@ -129,8 +136,7 @@ bool GameController::makeAttack(int i, int j) {
         cout << "Error: There isn't an enemy minion to attack at position " << j << endl;
         return false;
     }
-    activePlayer->field[i - 1]->attack(nonActivePlayer->field[j - 1]);
-    return true;
+    return activePlayer->field[i - 1]->attack(nonActivePlayer->field[j - 1]);
 }
 
 // Draw the board in its entirety

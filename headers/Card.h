@@ -11,7 +11,6 @@ class Card {
     int cost;
 
     public:
-    virtual void remove() = 0;
     virtual card_template_t asCardTemplate() = 0;
 };
 

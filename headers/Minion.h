@@ -14,6 +14,7 @@ class Minion : public Card {
     int startDmg;
     int dmg;
     int cost;
+    bool hasAttacked;
     Player *player;                     // The player this minion belongs to
     vector<Minion *>::iterator fieldLocation(vector<Minion *> &field);
     void die();
@@ -22,9 +23,10 @@ class Minion : public Card {
 
     Minion(Player *p, string name, int cost, int dmg, int maxHp);
     void remove();
-    virtual void attack(Minion *other);
-    virtual void attack(Player *other);
+    virtual bool attack(Minion *other);
+    virtual bool attack(Player *other);
     virtual void receiveDamage(int amount);
+    virtual void endTurnEffects();
     virtual int calculateDamage();
     card_template_t asCardTemplate();
 };

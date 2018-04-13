@@ -28,6 +28,7 @@ void GameController::nextTurn() {
 void GameController::play() {
     string cmd;
 	displayHelpMessage();
+    cout << ">";
 
 	while (cin >> cmd) {
 		// placeholder variables for selecting cards in hand / on the field
@@ -88,7 +89,15 @@ void GameController::play() {
 		} else if (cmd == "inspect") {
 
 		} else if (cmd == "hand") {
-
+            vector<card_template_t> cards;
+            for (vector<Card *>::iterator it = activePlayer->hand.begin(); it < activePlayer->hand.end(); it++) {
+                cards.push_back((*it)->asCardTemplate());
+            }
+            int numCards = cards.size();
+            for (int i = 0; i < 5 - numCards; i++) {
+                cards.push_back(CARD_TEMPLATE_EMPTY);
+            }
+            displayCardTemplates(cards, false);
 		} else if (cmd == "board") {
             drawBoard();
 		} else {
@@ -157,7 +166,7 @@ void GameController::drawBoard() {
     } else {
         displayCards.push_back(CARD_TEMPLATE_BORDER);
     }
-    displayCardTemplates(displayCards);
+    displayCardTemplates(displayCards, true);
 
     // Draw Player 2's Minions
     displayCards.clear();
@@ -168,7 +177,7 @@ void GameController::drawBoard() {
     for (int i = 0; i < 5 - numMinions; i++) {
         displayCards.push_back(CARD_TEMPLATE_BORDER);
     }
-    displayCardTemplates(displayCards);
+    displayCardTemplates(displayCards, true);
     // Display graphic in centre
     for(card_template_t::iterator it = CENTRE_GRAPHIC.begin(); it < CENTRE_GRAPHIC.end(); it++){
         cout << *it << endl;
@@ -183,7 +192,7 @@ void GameController::drawBoard() {
     for (int i = 0; i < 5 - numMinions; i++) {
         displayCards.push_back(CARD_TEMPLATE_BORDER);
     }
-    displayCardTemplates(displayCards);
+    displayCardTemplates(displayCards, true);
 
     // Draw Player 1's ritual, Player portrait, and graveyard
     displayCards.clear();
@@ -196,7 +205,7 @@ void GameController::drawBoard() {
     } else {
         displayCards.push_back(CARD_TEMPLATE_BORDER);
     }
-    displayCardTemplates(displayCards);
+    displayCardTemplates(displayCards, true);
 
     // Bottom border
     cout << EXTERNAL_BORDER_CHAR_BOTTOM_LEFT;
@@ -207,7 +216,7 @@ void GameController::drawBoard() {
 }
 
 // Given a vector of Card_Templates, draws them to stdout on the same row
-void GameController::displayCardTemplates(vector<card_template_t> &cards) {
+void GameController::displayCardTemplates(vector<card_template_t> &cards, bool withBorder) {
     int numCards = cards.size();
     if (cards.size() != 5) {
         cout << "Error: Need to display exactly 5 cards. Given " << numCards << endl;
@@ -217,14 +226,17 @@ void GameController::displayCardTemplates(vector<card_template_t> &cards) {
     // go through at most 5 cards and print them
     int numRows = cards.front().size();
     for (int i = 0; i < numRows; i++) {
-        cout << EXTERNAL_BORDER_CHAR_UP_DOWN;
+        if (withBorder) {
+            cout << EXTERNAL_BORDER_CHAR_UP_DOWN;
+        }
         cout << cards[0][i];
         cout << cards[1][i];
         cout << cards[2][i];
         cout << cards[3][i];
         cout << cards[4][i];
-        cout << EXTERNAL_BORDER_CHAR_UP_DOWN;
-        cout << endl;
+        if (withBorder) {
+            cout << EXTERNAL_BORDER_CHAR_UP_DOWN;
+        }        cout << endl;
     }
 }
 

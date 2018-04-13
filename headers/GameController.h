@@ -17,7 +17,7 @@ class GameController {
 
     // Private Methods
     void displayHelpMessage();
-    void displayCardTemplates(vector<card_template_t> &cards);
+    void displayCardTemplates(vector<card_template_t> &cards, bool withBorder);
     bool makeAttack(int i);
     bool makeAttack(int i, int j);
 

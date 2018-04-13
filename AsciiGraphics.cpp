@@ -68,7 +68,7 @@ card_template_t display_enchantment_attack_defence(std::string name,int cost,std
 
 card_template_t display_player_card(int player_num,std::string name,int life,int mana) {
   std::ostringstream oss;
-  card_template_t out = player_num == 1 ? PLAYER_1_TEMPLATE : PLAYER_2_TEMPLATE;
+  card_template_t out = player_num == 2 ? PLAYER_1_TEMPLATE : PLAYER_2_TEMPLATE;
   prepare_for_replace(out);
   std::string centred_name = name;
   if (centred_name.size() < 13) {

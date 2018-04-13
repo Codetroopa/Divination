@@ -25,6 +25,6 @@
         "new": "cpp",
         "stdexcept": "cpp",
         "deque": "cpp",
-        "locale": "cpp"
+        "stack": "cpp"
     }
 }

@@ -13,9 +13,9 @@ int main(int argc, char *argv[]) {
         cout << *it << endl;
     }
 
-    cout << "Enter Player 1's name:" << endl;
+    cout << "Enter Player 1's name:" << endl << ">";
     cin >> player1;
-    cout << "Enter Player 2's name:" << endl;
+    cout << "Enter Player 2's name:" << endl << ">";
     cin >> player2;
     cout << "Using default decks..." << endl << endl;
 

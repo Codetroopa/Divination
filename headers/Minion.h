@@ -3,6 +3,7 @@
 #include "Card.h"
 #include "Player.h"
 #include "GameController.h"
+#include "BaseEnchantment.h"
 #include <iostream>
 #include <vector>
 
@@ -18,6 +19,7 @@ class Minion : public Card {
     int dmg;
     int cost;
     bool hasAttacked;
+    BaseEnchantment *latestEnchantment; // Pointer to the first enchantment of the Enchantment Decorator list
     Player *player;                     // The player this minion belongs to
     vector<Minion *>::iterator fieldLocation(vector<Minion *> &field);
     void die();
@@ -25,7 +27,7 @@ class Minion : public Card {
     public:
 
     Minion(Player *p, string name, int cost, int dmg, int maxHp);
-    void remove();
+    void addEnchantment(BaseEnchantment *b);
     virtual bool attack(Minion *other);
     virtual bool attack(Player *other);
     virtual void receiveDamage(int amount);

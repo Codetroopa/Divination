@@ -10,6 +10,7 @@ Minion::Minion(Player *p, string name, int cost, int dmg, int maxHp) {
     this->cost = cost;
     this->player = p;
     this->hasAttacked = false;
+    this->latestEnchantment = NULL;
 }
 
 // Attack an opposing minion then get hit back. (APNAP ordering)
@@ -39,6 +40,15 @@ int Minion::calculateDamage() {
     // TODO: This will have to take into affect any enchantments in the future
     return dmg;
 }
+
+void Minion::addEnchantment(BaseEnchantment *b) {
+    b->prev = latestEnchantment;
+    latestEnchantment = b;
+    // We must immediately apply the Health enchantment
+    hp = latestEnchantment->getHp(hp);
+    maxHp = latestEnchantment->getHp(maxHp);
+}
+
 
 void Minion::receiveDamage(int amount) {
     hp -= amount;

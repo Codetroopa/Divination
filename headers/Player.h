@@ -11,6 +11,7 @@ class Deck;
 class Card;
 class Minion;
 class Ritual;
+class EnchantmentCard;
 
 class Player {
     int maxHp;
@@ -22,21 +23,22 @@ class Player {
     // private methods
     bool validCardIndex(int i);
     void playRitual(Ritual *r, int i);
+    void playEnchantment(EnchantmentCard *e, Minion *m, int i);
     void addToField(Minion *m, int position);
 
     public:
-    vector<Card *> hand;                // This Player's cards in hand
-    vector<Minion *> field;             // This Player's minions in the field, and still alive
-    stack<Minion *> graveyard;          // This Player's minions that have been killed
+    vector<Card *> hand;                    // This Player's cards in hand
+    vector<Minion *> field;                 // This Player's minions in the field, and still alive
+    stack<Minion *> graveyard;              // This Player's minions that have been killed
     Ritual *ritual;
-    int ownerNumber;                    // This is either 1 or 2 for Player 1 or 2
+    int ownerNumber;                        // This is either 1 or 2 for Player 1 or 2
     Player(string name, int o, string deck);
     void drawCard();
-    bool playCard(int i);               // Play a card from hand at index i.
-    bool playCard(int i, int p, int j); // Play a card from hand at index i. Target Player p's jth minion
+    bool playCard(int i);                   // Play a card from hand at index i.
+    bool playCard(int i, Minion *other);    // Play a card from hand at index i. Target given Minion
     void receiveDamage(int dmg);
     void gainMagic(int amount);
-    card_template_t asPortrait();       // Display as a card_template_t
+    card_template_t asPortrait();           // Display as a card_template_t
 };
 
 const int DEFAULT_HP = 20;

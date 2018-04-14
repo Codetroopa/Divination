@@ -51,6 +51,7 @@ void GameController::play() {
 		// placeholder variables for selecting cards in hand / on the field
 		int i;
 		int j;
+        int p;
         bool success;
 
 		if (cmd == "help") {
@@ -97,9 +98,45 @@ void GameController::play() {
                 cout << ">";
                 continue;
             }
-            success = activePlayer->playCard(i);
-            if (success) {
-                drawBoard();
+
+            if (iss.eof()) {
+                success = activePlayer->playCard(i);
+                if (success) {
+                    drawBoard();
+                }
+            } else {
+                if (!(iss >> p)) {
+                    cout << "Error: Bad input: " << cmd << endl;
+                    cout << ">";
+                    continue;
+                }
+
+                if (!(iss >> j)) {
+                    cout << "Error: Bad input: " << cmd << endl;
+                    cout << ">";
+                    continue;
+                }
+
+                Minion *other;
+                if (p == activePlayer->ownerNumber) {
+                    if (activePlayer->field.size() < j) {
+                        cout << "Error: Target Minion doesn't exist at index " << j << endl;
+                        cout << ">";
+                        continue;
+                    }
+                    other = activePlayer->field[j - 1];
+                } else {
+                    if (nonActivePlayer->field.size() < j) {
+                        cout << "Error: Target Minion doesn't exist at index " << j << endl;
+                        cout << ">";
+                        continue;
+                    }
+                    other = nonActivePlayer->field[j - 1];
+                }
+                success = activePlayer->playCard(i, other);
+                if (success) {
+                    drawBoard();
+                }
             }
 		} else if (cmd == "use") {
 

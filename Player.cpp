@@ -2,6 +2,7 @@
 #include "Deck.h"
 #include "Minion.h"
 #include "Ritual.h"
+#include "EnchantmentCard.h"
 using namespace std;
 
 // Ctor for setting up Player and its deck
@@ -43,19 +44,23 @@ bool Player::playCard(int i) {
         cout << "Error: You don't have a card at position " << i << endl;
         return false;
     }
-    if (field.size() >= 5) {
-        cout << "Your board is full!" << endl;
-        return false;
-    }
 
     Minion *m = dynamic_cast<Minion*>(hand[i - 1]);
     Ritual *r = dynamic_cast<Ritual*>(hand[i - 1]);
+    EnchantmentCard *e = dynamic_cast<EnchantmentCard*>(hand[i - 1]);
 
     // if this is true, we are playing a minion from the hand into the field
     if (m) {
+        if (field.size() >= 5) {
+            cout << "Your board is full!" << endl;
+            return false;
+        }
         addToField(m, i);
     } else if (r) {
         playRitual(r, i);
+    } else if (e) {
+        cout << "Error: This card requires a minion to target" << endl;
+        return false;
     } else {
         return false;
     }
@@ -63,8 +68,19 @@ bool Player::playCard(int i) {
 }
 
 // Play a card from hand at index i. Target Player p's jth minion
-bool Player::playCard(int i, int p, int j) {
-    return false;
+bool Player::playCard(int i, Minion *other) {
+    if (!validCardIndex(i)) {
+        cout << "Error: You don't have a card at position " << i << endl;
+        return false;
+    }
+
+    EnchantmentCard *e = dynamic_cast<EnchantmentCard*>(hand[i - 1]);
+    if (e) {
+        e->applyEnchantment(other);
+    } else {
+        return false;
+    }
+    return true;
 }
 
 void Player::receiveDamage(int dmg) {
@@ -96,6 +112,11 @@ void Player::playRitual(Ritual *r, int idx) {
         delete ritual;
     }
     ritual = r;
+    hand.erase(hand.begin() + (idx - 1));
+}
+
+void Player::playEnchantment(EnchantmentCard *e, Minion *m, int idx) {
+    e->applyEnchantment(m);
     hand.erase(hand.begin() + (idx - 1));
 }
 

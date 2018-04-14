@@ -21,7 +21,7 @@ class Ritual : public Card {
     card_template_t asCardTemplate();
     virtual void endOfTurnEffects(GameController *con) = 0;
     virtual void startOfTurnEffects(GameController *con) = 0;
-    virtual void onMinionPlayEffects(GameController *con) = 0;
+    virtual void onMinionPlayEffects(GameController *con, Minion *m) = 0;
 };
 
 #endif

@@ -1,9 +1,12 @@
 #include "Deck.h"
 #include "Card.h"
+#include "EnchantmentCard.h"
 #include "Player.h"
 #include "DarkRitual.h"
 #include "AuraOfPower.h"
 #include "Minion.h"
+#include "GiantStrength.h"
+#include "ColossalStrength.h"
 
 // Ctor to setup deck from a filename, using default deck otherwise.
 Deck::Deck(string deckFilePath, Player *p) {
@@ -25,10 +28,12 @@ Deck::Deck(string deckFilePath, Player *p) {
             cards.push_back(new AuraOfPower(p, cardName, 1, 1, 4, "At the start of your turn, gain 1 magic"));
         } else if (cardName == "Standstill") {
 
-        } else if (cardName == "Earth Elemental") {
-
-        } else if (cardName == "Earth Elemental") {
-
+        } else if (cardName == "Giant Strength") {
+            cards.push_back(new EnchantmentCard(new GiantStrength(NULL), cardName,
+                1, "", "+2", "+2"));
+        } else if (cardName == "Colossal Strength") {
+            cards.push_back(new EnchantmentCard(new ColossalStrength(NULL), cardName,
+                4, "", "x2", "x2"));
         } else if (cardName == "Earth Elemental") {
 
         } else if (cardName == "Earth Elemental") {

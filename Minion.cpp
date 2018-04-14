@@ -38,11 +38,16 @@ bool Minion::attack(Player *p) {
 
 int Minion::calculateDamage() {
     // TODO: This will have to take into affect any enchantments in the future
+    if (latestEnchantment) {
+        return latestEnchantment->getAttack(dmg);
+    }
     return dmg;
 }
 
 void Minion::addEnchantment(BaseEnchantment *b) {
-    b->prev = latestEnchantment;
+    if (latestEnchantment) {
+        b->prev = latestEnchantment;
+    }
     latestEnchantment = b;
     // We must immediately apply the Health enchantment
     hp = latestEnchantment->getHp(hp);
@@ -84,5 +89,5 @@ void Minion::startOfTurnEffects(GameController *con) {
 }
 
 card_template_t Minion::asCardTemplate() {
-    return display_minion_no_ability(name, cost, dmg, hp);
+    return display_minion_no_ability(name, cost, calculateDamage(), hp);
 }

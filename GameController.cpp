@@ -119,14 +119,14 @@ void GameController::play() {
 
                 Minion *other;
                 if (p == activePlayer->ownerNumber) {
-                    if (activePlayer->field.size() < j) {
+                    if (activePlayer->field.size() < j || j <= 0) {
                         cout << "Error: Target Minion doesn't exist at index " << j << endl;
                         cout << ">";
                         continue;
                     }
                     other = activePlayer->field[j - 1];
                 } else {
-                    if (nonActivePlayer->field.size() < j) {
+                    if (nonActivePlayer->field.size() < j || j <= 0) {
                         cout << "Error: Target Minion doesn't exist at index " << j << endl;
                         cout << ">";
                         continue;

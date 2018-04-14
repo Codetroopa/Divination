@@ -7,7 +7,8 @@ class BaseEnchantment {
 
     public:
     BaseEnchantment *prev;                  // A reference to the previous list of enchantments
-    virtual int getAttack();
+    BaseEnchantment();
+    virtual int getAttack(int baseDmg);
     virtual int getHp(int baseHp);
 };
 

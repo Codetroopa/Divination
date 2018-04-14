@@ -7,7 +7,7 @@ class ColossalStrength : public BaseEnchantment{
 
     public:
     ColossalStrength(BaseEnchantment *prev);
-    int getAttack();
+    int getAttack(int baseDmg);
     int getHp(int baseHp);
 };
 

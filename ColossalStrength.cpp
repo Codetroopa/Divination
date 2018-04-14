@@ -4,8 +4,11 @@ ColossalStrength::ColossalStrength(BaseEnchantment *b) {
     this->prev = b;
 }
 
-int ColossalStrength::getAttack() {
-    return prev->getAttack() * 2;
+int ColossalStrength::getAttack(int baseDmg) {
+    if (prev) {
+        return prev->getAttack(baseDmg) * 2;
+    }
+    return baseDmg * 2;
 }
 
 int ColossalStrength::getHp(int base) {

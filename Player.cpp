@@ -67,7 +67,7 @@ bool Player::playCard(int i) {
     return true;
 }
 
-// Play a card from hand at index i. Target Player p's jth minion
+// Play a card from hand at index i targetting Minion other
 bool Player::playCard(int i, Minion *other) {
     if (!validCardIndex(i)) {
         cout << "Error: You don't have a card at position " << i << endl;
@@ -76,7 +76,7 @@ bool Player::playCard(int i, Minion *other) {
 
     EnchantmentCard *e = dynamic_cast<EnchantmentCard*>(hand[i - 1]);
     if (e) {
-        e->applyEnchantment(other);
+        playEnchantment(e, other, i);
     } else {
         return false;
     }

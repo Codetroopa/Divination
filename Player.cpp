@@ -3,6 +3,9 @@
 #include "Minion.h"
 #include "Ritual.h"
 #include "EnchantmentCard.h"
+#include "Spell.h"
+#include "GameController.h"
+
 using namespace std;
 
 // Ctor for setting up Player and its deck
@@ -39,7 +42,7 @@ void Player::drawCard() {
 }
 
 // Play a card from hand at index i.
-bool Player::playCard(int i) {
+bool Player::playCard(GameController *con, int i) {
     if (!validCardIndex(i)) {
         cout << "Error: You don't have a card at position " << i << endl;
         return false;
@@ -47,6 +50,7 @@ bool Player::playCard(int i) {
 
     Minion *m = dynamic_cast<Minion*>(hand[i - 1]);
     Ritual *r = dynamic_cast<Ritual*>(hand[i - 1]);
+    Spell *s = dynamic_cast<Spell*>(hand[i - 1]);
     EnchantmentCard *e = dynamic_cast<EnchantmentCard*>(hand[i - 1]);
 
     // if this is true, we are playing a minion from the hand into the field
@@ -58,6 +62,8 @@ bool Player::playCard(int i) {
         addToField(m, i);
     } else if (r) {
         playRitual(r, i);
+    } else if (s) {
+        return playSpell(con, s, i);
     } else if (e) {
         cout << "Error: This card requires a minion to target" << endl;
         return false;
@@ -68,16 +74,21 @@ bool Player::playCard(int i) {
 }
 
 // Play a card from hand at index i targetting Minion other
-bool Player::playCard(int i, Minion *other) {
+bool Player::playCard(GameController *con, int i, Minion *other) {
     if (!validCardIndex(i)) {
         cout << "Error: You don't have a card at position " << i << endl;
         return false;
     }
 
     EnchantmentCard *e = dynamic_cast<EnchantmentCard*>(hand[i - 1]);
+    Spell *s = dynamic_cast<Spell*>(hand[i - 1]);
+
     if (e) {
         playEnchantment(e, other, i);
+    } else if (s) {
+        return playSpell(con, s, i, other);
     } else {
+        cout << "This card does not require a minion to target" << endl;
         return false;
     }
     return true;
@@ -118,6 +129,56 @@ void Player::playRitual(Ritual *r, int idx) {
 void Player::playEnchantment(EnchantmentCard *e, Minion *m, int idx) {
     e->applyEnchantment(m);
     hand.erase(hand.begin() + (idx - 1));
+}
+
+// These are non-targetted spells
+bool Player::playSpell(GameController *con, Spell *s, int idx) {
+    if (s->getName() == "Recharge") {
+        if (ritual) {
+            ritual->addCharges(3);
+        } else {
+            cout << "You need to have a Ritual in play!" << endl;
+            return false;
+        }
+    } else if (s->getName() == "Raise Dead") {
+        if (graveyard.size() > 0 && field.size() < 5) {
+            field.push_back(graveyard.top());
+            graveyard.pop();
+        } else {
+            cout << "There needs to be a Minion in the Graveyard and space on the field to play this card!" << endl;
+            return false;
+        }
+    } else if (s->getName() == "Blizzard") {
+        con->damageOpposingMinions(2);
+    } else {
+        cout << s->getName() << " needs to target a Minion!" << endl;
+        return false;
+    }
+    hand.erase(hand.begin() + (idx - 1));
+    return true;
+}
+
+// These are minion targetted spells
+bool Player::playSpell(GameController *con, Spell *s, int idx, Minion *m) {
+    if (s->getName() == "Banish") {
+        m->kill();
+    } else if (s->getName() == "Disenchant") {
+        if (m->latestEnchantment) {
+            m->removeTopEnchantment();
+        } else {
+            cout << "Target Minion isn't Enchanted!" << endl;
+            return false;
+        }
+    } else if (s->getName() == "Unsummon") {
+        m->resetStats();
+        deck->addToFront(m);
+        con->removeMinion(m);
+    } else {
+        cout << s->getName() << " doesn't target a Minion!" << endl;
+        return false;
+    }
+    hand.erase(hand.begin() + (idx - 1));
+    return true;
 }
 
 bool Player::validCardIndex(int i) {

@@ -8,11 +8,11 @@ AddStatsEnchantment::AddStatsEnchantment(BaseEnchantment *b, int dmg, int hp) {
 
 int AddStatsEnchantment::getAttack(int baseDmg) {
     if (prev) {
-        return prev->getAttack(baseDmg) + 2;
+        return prev->getAttack(baseDmg) + dmgAmount;
     }
-    return baseDmg + 2;
+    return baseDmg + dmgAmount;
 }
 
 int AddStatsEnchantment::getHp(int base) {
-    return base + 2;
+    return base + hpAmount;
 }

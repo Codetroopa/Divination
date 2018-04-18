@@ -1,5 +1,4 @@
 #include "GameController.h"
-#include "Player.h"
 
 // Ctor to set up the game and its Players/Decks
 GameController::GameController(string p1, string p2, string d1, string d2) {
@@ -63,6 +62,7 @@ void GameController::play() {
             break;
 		} else if (cmd == "draw") { // -testing only
             activePlayer->drawCard();
+            drawHand();
 	    } else if (cmd == "discard") { // -testing only
 
 		} else if (cmd == "attack") {
@@ -100,8 +100,13 @@ void GameController::play() {
             }
 
             if (iss.eof()) {
-                success = activePlayer->playCard(i);
+                int numMinions = activePlayer->field.size();
+                success = activePlayer->playCard(this, i);
                 if (success) {
+                    if (activePlayer->field.size() > numMinions) {
+                        // Here we can activate "on minion played" effects
+                        onMinionPlayed(activePlayer->field.back());
+                    }
                     drawBoard();
                 }
             } else {
@@ -133,25 +138,15 @@ void GameController::play() {
                     }
                     other = nonActivePlayer->field[j - 1];
                 }
-                success = activePlayer->playCard(i, other);
+                success = activePlayer->playCard(this, i, other);
                 if (success) {
                     drawBoard();
                 }
             }
 		} else if (cmd == "use") {
 
-		} else if (cmd == "inspect") {
-
 		} else if (cmd == "hand") {
-            vector<card_template_t> cards;
-            for (vector<Card *>::iterator it = activePlayer->hand.begin(); it < activePlayer->hand.end(); it++) {
-                cards.push_back((*it)->asCardTemplate());
-            }
-            int numCards = cards.size();
-            for (int i = 0; i < 5 - numCards; i++) {
-                cards.push_back(CARD_TEMPLATE_EMPTY);
-            }
-            displayCardTemplates(cards, false);
+            drawHand();
 		} else if (cmd == "board") {
             drawBoard();
 		} else {
@@ -193,6 +188,39 @@ void GameController::addMana(int amount, bool activePlayer) {
     }
 }
 
+void GameController::onMinionPlayed(Minion *m) {
+    // APNAP order!
+    // Active player first; ritual then minions
+    if (activePlayer->ritual) {
+        activePlayer->ritual->onMinionPlayEffects(this, m);
+    }
+
+    // Non-active player second; ritual then minions
+    if (nonActivePlayer->ritual) {
+        nonActivePlayer->ritual->onMinionPlayEffects(this, m);
+    }
+}
+
+void GameController::damageOpposingMinions(int amount) {
+    for (size_t i = 0; i < nonActivePlayer->field.size(); i++) {
+        nonActivePlayer->field[i]->receiveDamage(amount);
+    }
+}
+
+void GameController::removeMinion(Minion *m) {
+    for (size_t i = 0; i < activePlayer->field.size(); i++) {
+        if (activePlayer->field[i] == m) {
+            activePlayer->field.erase(activePlayer->field.begin() + i);
+            return;
+        }
+    }
+    for (size_t i = 0; i < nonActivePlayer->field.size(); i++) {
+        if (nonActivePlayer->field[i] == m) {
+            nonActivePlayer->field.erase(nonActivePlayer->field.begin() + i);
+            return;
+        }
+    }
+}
 
 // Draw the board in its entirety
 void GameController::drawBoard() {
@@ -284,6 +312,18 @@ void GameController::drawBoard() {
     cout << EXTERNAL_BORDER_CHAR_BOTTOM_RIGHT << endl;
 }
 
+void GameController::drawHand() {
+    vector<card_template_t> cards;
+    for (vector<Card *>::iterator it = activePlayer->hand.begin(); it < activePlayer->hand.end(); it++) {
+        cards.push_back((*it)->asCardTemplate());
+    }
+    int numCards = cards.size();
+    for (int i = 0; i < 5 - numCards; i++) {
+        cards.push_back(CARD_TEMPLATE_EMPTY);
+    }
+    displayCardTemplates(cards, false);
+}
+
 // Given a vector of Card_Templates, draws them to stdout on the same row
 void GameController::displayCardTemplates(vector<card_template_t> &cards, bool withBorder) {
     int numCards = cards.size();
@@ -318,7 +358,6 @@ void GameController::displayHelpMessage() {
 	cout << "attack minion -- Orders minion to attack the opponent." << endl;
 	cout << "play card [player target] -- Play card, optionally targeting player's target card." << endl;
 	cout << "use minion [player target] -- Use minion's special ability, optionally targeting player's target card." << endl;
-	cout << "inspect minion -- View a minion's card and all enchantments on that minion." << endl;
 	cout << "hand -- Describe all cards in your hand." << endl;
 	cout << "board -- Describe all cards on the board." << endl;
 }

@@ -12,6 +12,8 @@ class Card;
 class Minion;
 class Ritual;
 class EnchantmentCard;
+class Spell;
+class GameController;
 
 class Player {
     int maxHp;
@@ -23,6 +25,8 @@ class Player {
     // private methods
     bool validCardIndex(int i);
     void playRitual(Ritual *r, int i);
+    bool playSpell(GameController *con, Spell *r, int i);
+    bool playSpell(GameController *con, Spell *r, int idx, Minion *m);
     void playEnchantment(EnchantmentCard *e, Minion *m, int i);
     void addToField(Minion *m, int position);
 
@@ -34,8 +38,8 @@ class Player {
     int ownerNumber;                        // This is either 1 or 2 for Player 1 or 2
     Player(string name, int o, string deck);
     void drawCard();
-    bool playCard(int i);                   // Play a card from hand at index i.
-    bool playCard(int i, Minion *other);    // Play a card from hand at index i. Target given Minion
+    bool playCard(GameController *con, int i);                   // Play a card from hand at index i.
+    bool playCard(GameController *con, int i, Minion *other);    // Play a card from hand at index i. Target given Minion
     void receiveDamage(int dmg);
     void gainMagic(int amount);
     card_template_t asPortrait();           // Display as a card_template_t

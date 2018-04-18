@@ -17,6 +17,7 @@ class Deck {
     void shuffle();
     bool hasCards();
     Card *drawCard();
+    void addToFront(Card *c);
 };
 
 #endif

@@ -1,14 +1,14 @@
 #ifndef GAMECONTROLLER_H
 #define GAMECONTROLLER_H
 #include "Minion.h"
+#include "Player.h"
+#include "Spell.h"
 #include "Ritual.h"
 #include "AsciiGraphics.h"
 #include <iostream>
 #include <sstream>
 
 using namespace std;
-
-class Player;
 
 class GameController {
     // Private Variables
@@ -28,7 +28,11 @@ class GameController {
     GameController(string p1, string p2, string d1, string d2);
     void play();
     void drawBoard();
+    void drawHand();
     void nextTurn();
+    void removeMinion(Minion *m);
+    void onMinionPlayed(Minion *);
+    void damageOpposingMinions(int amount);
     void addMana(int amount, bool activePlayer = true);
 };
 

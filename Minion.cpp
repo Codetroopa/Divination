@@ -74,10 +74,33 @@ vector<Minion *>::iterator Minion::fieldLocation(vector<Minion *> &field) {
 }
 
 void Minion::die() {
+    // Move to graveyard with default stats
     player->graveyard.push(this);
     player->field.erase(fieldLocation(player->field));
+    resetStats();
+}
+
+void Minion::kill() {
+    die();
+}
+
+void Minion::resetStats() {
+    // Remove all enchantments
+    if (latestEnchantment) {
+        delete latestEnchantment;
+        latestEnchantment = NULL;
+    }
     hp = startHp;
     dmg = startDmg;
+}
+
+void Minion::removeTopEnchantment() {
+    if (!latestEnchantment) {
+        return;
+    }
+    hp -= latestEnchantment->getHp(0);
+    maxHp -= latestEnchantment->getHp(0);
+    latestEnchantment = latestEnchantment->prev;
 }
 
 void Minion::endOfTurnEffects(GameController *con) {

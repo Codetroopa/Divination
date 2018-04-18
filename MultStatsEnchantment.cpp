@@ -14,5 +14,8 @@ int MultStatsEnchantment::getAttack(int baseDmg) {
 }
 
 int MultStatsEnchantment::getHp(int base) {
+    if (base == 0) {
+        base = 1;
+    }
     return base * hpMult;
 }

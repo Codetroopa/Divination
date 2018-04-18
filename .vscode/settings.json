@@ -26,6 +26,7 @@
         "stdexcept": "cpp",
         "deque": "cpp",
         "stack": "cpp",
-        "locale": "cpp"
+        "locale": "cpp",
+        "tuple": "cpp"
     }
 }

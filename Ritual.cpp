@@ -10,6 +10,10 @@ Ritual::Ritual(Player *p, string name, int cost, int ritualCost, int maxCharges,
     this->player = p;
 }
 
+void Ritual::addCharges(int amount) {
+    charges += amount;
+}
+
 card_template_t Ritual::asCardTemplate() {
     return display_ritual(name, cost, ritualCost, description, charges);
 }

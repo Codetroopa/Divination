@@ -39,6 +39,7 @@ void GameController::nextTurn() {
     // Now the new Active Player draws a card and gains magic before finally beginning their turn
     activePlayer->drawCard();
     activePlayer->gainMagic(1);
+    activePlayer->regenerateMagic();
 }
 
 void GameController::play() {
@@ -358,8 +359,8 @@ void GameController::displayHelpMessage() {
 	cout << "quit -- End the game." << endl;
 	cout << "attack minion other-minion -- Orders minion to attack other-minion." << endl;
 	cout << "attack minion -- Orders minion to attack the opponent." << endl;
-	cout << "play card [player target] -- Play card, optionally targeting player's target card." << endl;
-	cout << "use minion [player target] -- Use minion's special ability, optionally targeting player's target card." << endl;
+	cout << "play card [player target] -- Play card, optionally targeting player's target minion." << endl;
+	cout << "use minion [player target] -- Use minion's special ability, optionally targeting player's target minion." << endl;
 	cout << "hand -- Describe all cards in your hand." << endl;
 	cout << "board -- Describe all cards on the board." << endl;
 }

@@ -13,6 +13,7 @@ Player::Player(string name, int owner, string filePath) {
     this->hp = DEFAULT_HP;
     this->maxHp = DEFAULT_HP;
     this->magic = DEFAULT_MAGIC;
+    this->maxMagic = DEFAULT_MAGIC;
     this->name = name;
     this->deck = new Deck(filePath, this);
     this->ownerNumber = owner;
@@ -43,8 +44,17 @@ void Player::drawCard() {
 
 // Play a card from hand at index i.
 bool Player::playCard(GameController *con, int i) {
+    bool success = false;
+
     if (!validCardIndex(i)) {
         cout << "Error: You don't have a card at position " << i << endl;
+        return false;
+    }
+
+    // First check if we have enough Magic to cast this card
+    Card *card = hand[i - 1];
+    if (card->getCost() > magic) {
+        cout << "You don't have enough Magic!" << endl;
         return false;
     }
 
@@ -63,20 +73,32 @@ bool Player::playCard(GameController *con, int i) {
     } else if (r) {
         playRitual(r, i);
     } else if (s) {
-        return playSpell(con, s, i);
+        success = playSpell(con, s, i);
+        if (success) {
+            magic -= card->getCost();
+        }
+        return success;
     } else if (e) {
         cout << "Error: This card requires a minion to target" << endl;
         return false;
     } else {
         return false;
     }
+    magic -= card->getCost();
     return true;
 }
 
 // Play a card from hand at index i targetting Minion other
 bool Player::playCard(GameController *con, int i, Minion *other) {
+    bool success = false;
     if (!validCardIndex(i)) {
         cout << "Error: You don't have a card at position " << i << endl;
+        return false;
+    }
+    // First check if we have enough Magic to cast this card
+    Card *card = hand[i - 1];
+    if (card->getCost() > magic) {
+        cout << "You don't have enough Magic!" << endl;
         return false;
     }
 
@@ -86,11 +108,16 @@ bool Player::playCard(GameController *con, int i, Minion *other) {
     if (e) {
         playEnchantment(e, other, i);
     } else if (s) {
-        return playSpell(con, s, i, other);
+        success = playSpell(con, s, i, other);
+        if (success) {
+            magic -= card->getCost();
+        }
+        return success;
     } else {
         cout << "This card does not require a minion to target" << endl;
         return false;
     }
+    magic -= card->getCost();
     return true;
 }
 
@@ -103,7 +130,12 @@ void Player::receiveDamage(int dmg) {
 }
 
 void Player::gainMagic(int amount) {
+    maxMagic += amount;
     magic += amount;
+}
+
+void Player::regenerateMagic() {
+    magic = maxMagic;
 }
 
 void Player::addToField(Minion *m, int handPosition) {

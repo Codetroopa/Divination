@@ -34,12 +34,12 @@ class Minion : public Card {
     void revive();
     bool isDead();
     void resetStats();
-    virtual bool attack(Minion *other);
-    virtual bool attack(Player *other);
-    virtual void receiveDamage(int amount);
-    virtual void endOfTurnEffects(GameController *con);
-    virtual void startOfTurnEffects(GameController *con);
-    virtual int calculateDamage();
+    bool attack(Minion *other);
+    bool attack(Player *other);
+    void receiveDamage(int amount);
+    void endOfTurnEffects(GameController *con);
+    void startOfTurnEffects(GameController *con);
+    int calculateDamage();
     card_template_t asCardTemplate();
 };
 

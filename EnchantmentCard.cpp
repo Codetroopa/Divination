@@ -10,7 +10,6 @@ EnchantmentCard::EnchantmentCard(BaseEnchantment *b, string name, int cost, stri
 }
 
 void EnchantmentCard::applyEnchantment(Minion *m) {
-    cout << enchantment->getAttack(1) << endl;
     m->addEnchantment(enchantment);
 }
 

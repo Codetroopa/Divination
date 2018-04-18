@@ -18,6 +18,7 @@ class GameController;
 class Player {
     int maxHp;
     int hp;
+    int maxMagic;
     int magic;
     string name;
     Deck *deck;
@@ -43,6 +44,7 @@ class Player {
     void receiveDamage(int dmg);
     void addToDeckFront(Card *c);
     void gainMagic(int amount);
+    void regenerateMagic();
     card_template_t asPortrait();           // Display as a card_template_t
 };
 

@@ -12,6 +12,7 @@ class Card {
 
     public:
     virtual card_template_t asCardTemplate() = 0;
+    int getCost();
 };
 
 #endif

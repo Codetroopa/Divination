@@ -42,6 +42,16 @@ Deck::Deck(string deckFilePath, Player *p) {
             cards.push_back(new Minion(p, cardName, 0, 1, 1));
         } else if (cardName == "Earth Elemental") {
             cards.push_back(new Minion(p, cardName, 3, 4, 4));
+        } else if (cardName == "Fire Elemental") {
+
+        } else if (cardName == "Potion Seller") {
+
+        } else if (cardName == "Novice Pyromancer") {
+
+        } else if (cardName == "Apprentice Summoner") {
+
+        } else if (cardName == "Master Summoner") {
+
         } else if (cardName == "Dark Ritual") {
             cards.push_back(new DarkRitual(p, cardName, 0, 1, 5, "At the start of your turn, gain 1 magic"));
         } else if (cardName == "Aura of Power") {
@@ -72,12 +82,9 @@ Deck::Deck(string deckFilePath, Player *p) {
             cards.push_back(new Spell(p, cardName, 2, "Resurrect the top minion in your Graveyard"));
         } else if (cardName == "Blizzard") {
             cards.push_back(new Spell(p, cardName, 3, "Deal 2 damage to all enemy minions"));
-        } else if (cardName == "Earth Elemental") {
-
-        } else if (cardName == "Earth Elemental") {
-
-        } else if (cardName == "Earth Elemental") {
-
+        } else {
+            cout << "The fuck you doing mate. This card doesn't exist" << endl;
+            exit(69);
         }
     }
 

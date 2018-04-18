@@ -13,3 +13,17 @@ int BaseEnchantment::getAttack(int dmg) {
 int BaseEnchantment::getHp(int hp) {
     return hp;
 }
+
+int BaseEnchantment::getActivationCost(int baseActivation) {
+    if (prev) {
+        return prev->getActivationCost(baseActivation);
+    }
+    return baseActivation;
+}
+
+bool BaseEnchantment::isSilenced(bool defaultFlag) {
+    if (prev) {
+        return prev->isSilenced(defaultFlag);
+    }
+    return defaultFlag;
+}

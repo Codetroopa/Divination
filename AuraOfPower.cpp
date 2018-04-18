@@ -9,7 +9,6 @@ void AuraOfPower::onMinionPlayEffects(GameController *con, Minion *minion) {
         // do nothing
         return;
     }
-    // TODO Buff minion here
     minion->addEnchantment(new AddStatsEnchantment(NULL, 1, 1));
     this->charges -= this->ritualCost;
 }

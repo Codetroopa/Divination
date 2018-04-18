@@ -10,6 +10,8 @@ class BaseEnchantment {
     BaseEnchantment();
     virtual int getAttack(int baseDmg);
     virtual int getHp(int baseHp);
+    virtual int getActivationCost(int baseActivation);
+    virtual bool isSilenced(bool defaultFlag);
 };
 
 #endif

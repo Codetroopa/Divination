@@ -6,6 +6,9 @@
 #include "Minion.h"
 #include "AddStatsEnchantment.h"
 #include "MultStatsEnchantment.h"
+#include "Standstill.h"
+#include "SilenceEnchantment.h"
+#include "MagicFatigueEnchantment.h"
 
 void Deck::shuffle() {
     return;
@@ -42,15 +45,21 @@ Deck::Deck(string deckFilePath, Player *p) {
         } else if (cardName == "Dark Ritual") {
             cards.push_back(new DarkRitual(p, cardName, 0, 1, 5, "At the start of your turn, gain 1 magic"));
         } else if (cardName == "Aura of Power") {
-            cards.push_back(new AuraOfPower(p, cardName, 1, 1, 4, "At the start of your turn, gain 1 magic"));
+            cards.push_back(new AuraOfPower(p, cardName, 1, 1, 4, "Whenever a minion is played, it gains +1/+1"));
         } else if (cardName == "Standstill") {
-
+            cards.push_back(new Standstill(p, cardName, 3, 2, 4, "Whenever ANY minion is played, destroy it"));
         } else if (cardName == "Giant Strength") {
             cards.push_back(new EnchantmentCard(new AddStatsEnchantment(NULL, 2, 2), cardName,
                 1, "", "+2", "+2"));
         } else if (cardName == "Colossal Strength") {
             cards.push_back(new EnchantmentCard(new MultStatsEnchantment(NULL, 2, 2), cardName,
                 4, "", "x2", "x2"));
+        } else if (cardName == "Magic Fatigue") {
+            cards.push_back(new EnchantmentCard(new MagicFatigueEnchantment(NULL, 2), cardName, 0,
+                "Enchanted minion's activated abilities cost 2 more", "", ""));
+        } else if (cardName == "Silence") {
+            cards.push_back(new EnchantmentCard(new SilenceEnchantment(NULL), cardName, 1,
+                "Enchanted minion can not use abilities", "", ""));
         } else if (cardName == "Banish") {
             cards.push_back(new Spell(p, cardName, 3, "Destroy target minion"));
         } else if (cardName == "Unsummon") {

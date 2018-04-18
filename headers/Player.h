@@ -41,6 +41,7 @@ class Player {
     bool playCard(GameController *con, int i);                   // Play a card from hand at index i.
     bool playCard(GameController *con, int i, Minion *other);    // Play a card from hand at index i. Target given Minion
     void receiveDamage(int dmg);
+    void addToDeckFront(Card *c);
     void gainMagic(int amount);
     card_template_t asPortrait();           // Display as a card_template_t
 };

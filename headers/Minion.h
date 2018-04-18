@@ -20,6 +20,7 @@ class Minion : public Card {
     int dmg;
     int cost;
     bool hasAttacked;
+    bool dead = false;
     Player *player;                     // The player this minion belongs to
     vector<Minion *>::iterator fieldLocation(vector<Minion *> &field);
     void die();
@@ -30,6 +31,8 @@ class Minion : public Card {
     void addEnchantment(BaseEnchantment *b);
     void removeTopEnchantment();
     void kill();
+    void revive();
+    bool isDead();
     void resetStats();
     virtual bool attack(Minion *other);
     virtual bool attack(Player *other);

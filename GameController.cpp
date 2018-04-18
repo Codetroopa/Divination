@@ -207,15 +207,17 @@ void GameController::damageOpposingMinions(int amount) {
     }
 }
 
-void GameController::removeMinion(Minion *m) {
+void GameController::removeMinionToOwnersDeck(Minion *m) {
     for (size_t i = 0; i < activePlayer->field.size(); i++) {
         if (activePlayer->field[i] == m) {
+            activePlayer->addToDeckFront(m);
             activePlayer->field.erase(activePlayer->field.begin() + i);
             return;
         }
     }
     for (size_t i = 0; i < nonActivePlayer->field.size(); i++) {
         if (nonActivePlayer->field[i] == m) {
+            nonActivePlayer->addToDeckFront(m);
             nonActivePlayer->field.erase(nonActivePlayer->field.begin() + i);
             return;
         }

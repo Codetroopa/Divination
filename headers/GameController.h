@@ -30,7 +30,7 @@ class GameController {
     void drawBoard();
     void drawHand();
     void nextTurn();
-    void removeMinion(Minion *m);
+    void removeMinionToOwnersDeck(Minion *m);
     void onMinionPlayed(Minion *);
     void damageOpposingMinions(int amount);
     void addMana(int amount, bool activePlayer = true);

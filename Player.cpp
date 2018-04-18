@@ -117,6 +117,10 @@ void Player::addToField(Minion *m, int handPosition) {
     hand.erase(hand.begin() + (handPosition - 1));
 }
 
+void Player::addToDeckFront(Card *c) {
+    deck->addToFront(c);
+}
+
 void Player::playRitual(Ritual *r, int idx) {
     if (ritual != NULL) {
         // here it is safe to destroy the old ritual and put in the new one
@@ -142,7 +146,9 @@ bool Player::playSpell(GameController *con, Spell *s, int idx) {
         }
     } else if (s->getName() == "Raise Dead") {
         if (graveyard.size() > 0 && field.size() < 5) {
-            field.push_back(graveyard.top());
+            Minion * m = graveyard.top();
+            m->revive();
+            field.push_back(m);
             graveyard.pop();
         } else {
             cout << "There needs to be a Minion in the Graveyard and space on the field to play this card!" << endl;
@@ -171,8 +177,7 @@ bool Player::playSpell(GameController *con, Spell *s, int idx, Minion *m) {
         }
     } else if (s->getName() == "Unsummon") {
         m->resetStats();
-        deck->addToFront(m);
-        con->removeMinion(m);
+        con->removeMinionToOwnersDeck(m);
     } else {
         cout << s->getName() << " doesn't target a Minion!" << endl;
         return false;

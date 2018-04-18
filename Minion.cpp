@@ -77,11 +77,23 @@ void Minion::die() {
     // Move to graveyard with default stats
     player->graveyard.push(this);
     player->field.erase(fieldLocation(player->field));
+    dead = true;
     resetStats();
 }
 
 void Minion::kill() {
-    die();
+    if (!dead) {
+        die();
+    }
+}
+
+// ensure all stats are ready to go for rebirth
+void Minion::revive() {
+    dead = false;
+}
+
+bool Minion::isDead() {
+    return dead;
 }
 
 void Minion::resetStats() {

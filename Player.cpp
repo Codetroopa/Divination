@@ -5,6 +5,7 @@
 #include "EnchantmentCard.h"
 #include "Spell.h"
 #include "GameController.h"
+#include "BaseEnchantment.h"
 
 using namespace std;
 
@@ -165,6 +166,12 @@ void Player::playRitual(Ritual *r, int idx) {
 void Player::playEnchantment(EnchantmentCard *e, Minion *m, int idx) {
     e->applyEnchantment(m);
     hand.erase(hand.begin() + (idx - 1));
+}
+
+void Player::enchantAllFriendlyMinions(BaseEnchantment *e) {
+    for (size_t i = 0; i < field.size(); i++) {
+        field[i]->addEnchantment(e);
+    }
 }
 
 // These are non-targetted spells

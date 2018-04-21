@@ -9,6 +9,7 @@
 #include "Standstill.h"
 #include "SilenceEnchantment.h"
 #include "MagicFatigueEnchantment.h"
+#include "PotionSeller.h"
 
 void Deck::shuffle() {
     return;
@@ -45,7 +46,8 @@ Deck::Deck(string deckFilePath, Player *p) {
         } else if (cardName == "Fire Elemental") {
 
         } else if (cardName == "Potion Seller") {
-
+            cards.push_back(new PotionSeller(p, cardName, 2, 1, 3,
+                "At the end of your turn, all friendly minions gain +0/+1"));
         } else if (cardName == "Novice Pyromancer") {
 
         } else if (cardName == "Apprentice Summoner") {

@@ -1,4 +1,5 @@
 #include "GameController.h"
+#include "TriggerMinion.h"
 
 // Ctor to set up the game and its Players/Decks
 GameController::GameController(string p1, string p2, string d1, string d2) {
@@ -16,7 +17,15 @@ void GameController::nextTurn() {
     }
     // End of turn triggers for active player
     for (size_t i = 0; i < activePlayer->field.size(); i++) {
-        activePlayer->field[i]->endOfTurnEffects(this);
+        Minion *m = activePlayer->field[i];
+        TriggerMinion *tm = dynamic_cast<TriggerMinion*>(m);
+
+        // Do common end-of-turn effects
+        m->endOfTurnEffects(this);
+        // Do TriggerMinion only effects
+        if (tm) {
+            tm->endOfTurnEffects(this);
+        }
     }
     if (activePlayer->ritual) {
         activePlayer->ritual->endOfTurnEffects(this);
@@ -30,7 +39,15 @@ void GameController::nextTurn() {
 
     // Start of turn triggers for new active player
     for (size_t i = 0; i < activePlayer->field.size(); i++) {
-        activePlayer->field[i]->startOfTurnEffects(this);
+        Minion *m = activePlayer->field[i];
+        TriggerMinion *tm = dynamic_cast<TriggerMinion*>(m);
+
+        // Do common start-of-turn effects
+        m->startOfTurnEffects(this);
+        // Do TriggerMinion only effects
+        if (tm) {
+            tm->startOfTurnEffects(this);
+        }
     }
     if (activePlayer->ritual) {
         activePlayer->ritual->startOfTurnEffects(this);

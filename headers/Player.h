@@ -14,6 +14,7 @@ class Ritual;
 class EnchantmentCard;
 class Spell;
 class GameController;
+class BaseEnchantment;
 
 class Player {
     int maxHp;
@@ -45,6 +46,7 @@ class Player {
     void addToDeckFront(Card *c);
     void gainMagic(int amount);
     void regenerateMagic();
+    void enchantAllFriendlyMinions(BaseEnchantment *e);
     card_template_t asPortrait();           // Display as a card_template_t
 };
 

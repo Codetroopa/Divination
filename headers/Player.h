@@ -4,6 +4,7 @@
 #include <vector>
 #include <stack>
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
@@ -46,6 +47,7 @@ class Player {
     void addToDeckFront(Card *c);
     void gainMagic(int amount);
     void regenerateMagic();
+    void restoreHealth(int amount);
     void enchantAllFriendlyMinions(BaseEnchantment *e);
     card_template_t asPortrait();           // Display as a card_template_t
 };

@@ -18,12 +18,11 @@ class Minion : public Card {
     int hp;
     int startDmg;
     int dmg;
-    int cost;
     bool hasAttacked;
     bool dead = false;
     Player *player;                     // The player this minion belongs to
     vector<Minion *>::iterator fieldLocation(vector<Minion *> &field);
-    void die();
+    virtual void die();
 
     public:
     Minion(Player *p, string name, int cost, int dmg, int maxHp);

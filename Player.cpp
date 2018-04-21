@@ -55,7 +55,7 @@ bool Player::playCard(GameController *con, int i) {
     // First check if we have enough Magic to cast this card
     Card *card = hand[i - 1];
     if (card->getCost() > magic) {
-        cout << "You don't have enough Magic!" << endl;
+        cout << "You only have " << magic << " Magic while the card costs " << card->getCost() << endl;
         return false;
     }
 
@@ -128,6 +128,10 @@ void Player::receiveDamage(int dmg) {
         cout << name << " has been defeated!" << endl;
         exit(0);
     }
+}
+
+void Player::restoreHealth(int amount) {
+    hp = min(hp + amount, maxHp);
 }
 
 void Player::gainMagic(int amount) {

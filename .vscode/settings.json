@@ -28,6 +28,8 @@
         "stack": "cpp",
         "locale": "cpp",
         "tuple": "cpp",
-        "__locale": "cpp"
+        "__locale": "cpp",
+        "chrono": "cpp",
+        "limits": "cpp"
     }
 }

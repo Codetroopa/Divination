@@ -10,6 +10,8 @@
 #include "SilenceEnchantment.h"
 #include "MagicFatigueEnchantment.h"
 #include "PotionSeller.h"
+#include "FireElemental.h"
+#include "RoyalGuard.h"
 
 void Deck::shuffle() {
     return;
@@ -44,10 +46,14 @@ Deck::Deck(string deckFilePath, Player *p) {
         } else if (cardName == "Earth Elemental") {
             cards.push_back(new Minion(p, cardName, 3, 4, 4));
         } else if (cardName == "Fire Elemental") {
-
+            cards.push_back(new FireElemental(p, cardName, 2, 2, 2,
+                "Whenever an opponent's minion enters play, deal 1 damage to it"));
         } else if (cardName == "Potion Seller") {
             cards.push_back(new PotionSeller(p, cardName, 2, 1, 3,
                 "At the end of your turn, all friendly minions gain +0/+1"));
+        } else if (cardName == "Royal Guard") {
+            cards.push_back(new RoyalGuard(p, cardName, 3, 3, 4,
+                "Deathrattle: restore 4 health to your hero"));
         } else if (cardName == "Novice Pyromancer") {
 
         } else if (cardName == "Apprentice Summoner") {

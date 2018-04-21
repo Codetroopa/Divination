@@ -18,6 +18,7 @@ class TriggerMinion : public Minion {
     virtual void startOfTurnEffects(GameController *con) {};
     virtual void onMinionPlayEffects(GameController *con, Minion *m) {};
     virtual void deathrattle(GameController *con) {};
+    virtual void die() { Minion::die(); };
 
     card_template_t asCardTemplate();
 };

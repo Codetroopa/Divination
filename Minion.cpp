@@ -37,7 +37,6 @@ bool Minion::attack(Player *p) {
 }
 
 int Minion::calculateDamage() {
-    // TODO: This will have to take into affect any enchantments in the future
     if (latestEnchantment) {
         return latestEnchantment->getAttack(dmg);
     }

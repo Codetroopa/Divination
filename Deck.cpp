@@ -12,9 +12,22 @@
 #include "PotionSeller.h"
 #include "FireElemental.h"
 #include "RoyalGuard.h"
+#include "NovicePyromancer.h"
+#include "ApprenticeSummoner.h"
+#include "MasterSummoner.h"
 
 void Deck::shuffle() {
-    return;
+    // randomly swap indices 10000 times
+    int i = 0;
+    int j = 0;
+    Card *tmp = NULL;
+    for (int r = 0; r < 9999; r++) {
+        i = rand() % cards.size();
+        j = rand() % cards.size();
+        tmp = cards[i];
+        cards[i] = cards[j];
+        cards[j] = tmp;
+    }
 }
 
 bool Deck::hasCards() {
@@ -33,6 +46,8 @@ void Deck::addToFront(Card *c) {
 
 // Ctor to setup deck from a filename, using default deck otherwise.
 Deck::Deck(string deckFilePath, Player *p) {
+    // init randomness
+    srand(time(NULL));
     string cardName;
     fstream file(deckFilePath);
 
@@ -55,11 +70,14 @@ Deck::Deck(string deckFilePath, Player *p) {
             cards.push_back(new RoyalGuard(p, cardName, 3, 3, 4,
                 "Deathrattle: restore 4 health to your hero"));
         } else if (cardName == "Novice Pyromancer") {
-
+            cards.push_back(new NovicePyromancer(p, cardName, 1, 0, 2, 1,
+                "Deal 1 damage to target minion"));
         } else if (cardName == "Apprentice Summoner") {
-
+            cards.push_back(new ApprenticeSummoner(p, cardName, 1, 1, 1, 1,
+                "Summon a 1/1 air elemental"));
         } else if (cardName == "Master Summoner") {
-
+            cards.push_back(new MasterSummoner(p, cardName, 3, 2, 3, 2,
+                "Summon up to three 1/1 air elementals"));
         } else if (cardName == "Dark Ritual") {
             cards.push_back(new DarkRitual(p, cardName, 0, 1, 5, "At the start of your turn, gain 1 magic"));
         } else if (cardName == "Aura of Power") {

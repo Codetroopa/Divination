@@ -2,11 +2,12 @@
 #include "TriggerMinion.h"
 
 // Ctor to set up the game and its Players/Decks
-GameController::GameController(string p1, string p2, string d1, string d2) {
+GameController::GameController(string p1, string p2, string d1, string d2, bool testing) {
     // if the deck string is empty, we should fall back to using the default deck
     this->activePlayer = new Player(p1, 1, d1);
     this->nonActivePlayer = new Player(p2, 2, d2);
     this->turn = 1;
+    this->testing = testing;
 }
 
 void GameController::nextTurn() {
@@ -59,6 +60,23 @@ void GameController::nextTurn() {
     activePlayer->regenerateMagic();
 }
 
+// Summons 'textless' minions with provided stats. Will be successful if there is room for at least
+//   one minion UNLESS mustHaveRoom is true.
+bool GameController::summonMinions(string name, int num, int dmg, int hp, bool mustHaveRoom) {
+    int spaceLeft = 5 - activePlayer->field.size();
+    if (spaceLeft <= 0) {
+        return false;
+    }
+    if (mustHaveRoom && spaceLeft < num) {
+        return false;
+    }
+
+    for (;num > 0 && spaceLeft > 0; num--, spaceLeft--) {
+        activePlayer->field.push_back(new Minion(activePlayer, name, (hp + dmg) / 2, dmg, hp));
+    }
+    return true;
+}
+
 void GameController::play() {
     string cmd;
 	displayHelpMessage();
@@ -79,11 +97,14 @@ void GameController::play() {
 		} else if (cmd == "quit") {
             break;
 		} else if (cmd == "draw") { // -testing only
+            if (!testing) {
+                cout << "Error: Bad input: " << cmd << endl;
+                cout << ">";
+                continue;
+            }
             activePlayer->drawCard();
             drawHand();
-	    } else if (cmd == "discard") { // -testing only
-
-		} else if (cmd == "attack") {
+	    } else if (cmd == "attack") {
             getline(cin, cmd);
             istringstream iss(cmd);
             if (!(iss >> i)) {
@@ -162,7 +183,53 @@ void GameController::play() {
                 }
             }
 		} else if (cmd == "use") {
+            getline(cin, cmd);
+            istringstream iss(cmd);
+            if (!(iss >> i)) {
+                cout << "Error: Bad input: " << cmd << endl;
+                cout << ">";
+                continue;
+            }
 
+            if (iss.eof()) {
+                success = activePlayer->useMinion(this, i);
+                if (success) {
+                    drawBoard();
+                }
+            } else {
+                if (!(iss >> p)) {
+                    cout << "Error: Bad input: " << cmd << endl;
+                    cout << ">";
+                    continue;
+                }
+
+                if (!(iss >> j)) {
+                    cout << "Error: Bad input: " << cmd << endl;
+                    cout << ">";
+                    continue;
+                }
+
+                Minion *other;
+                if (p == activePlayer->ownerNumber) {
+                    if (activePlayer->field.size() < j || j <= 0) {
+                        cout << "Error: Target Minion doesn't exist at index " << j << endl;
+                        cout << ">";
+                        continue;
+                    }
+                    other = activePlayer->field[j - 1];
+                } else {
+                    if (nonActivePlayer->field.size() < j || j <= 0) {
+                        cout << "Error: Target Minion doesn't exist at index " << j << endl;
+                        cout << ">";
+                        continue;
+                    }
+                    other = nonActivePlayer->field[j - 1];
+                }
+                success = activePlayer->useMinion(this, i, other);
+                if (success) {
+                    drawBoard();
+                }
+            }
 		} else if (cmd == "hand") {
             drawHand();
 		} else if (cmd == "board") {
@@ -213,9 +280,23 @@ void GameController::onMinionPlayed(Minion *m) {
         activePlayer->ritual->onMinionPlayEffects(this, m);
     }
 
+    for (size_t i = 0; i < activePlayer->field.size(); i++) {
+        TriggerMinion *tm = dynamic_cast<TriggerMinion*>(activePlayer->field[i]);
+        if (tm) {
+            tm->onMinionPlayEffects(this, m);
+        }
+    }
+
     // Non-active player second; ritual then minions
     if (nonActivePlayer->ritual) {
         nonActivePlayer->ritual->onMinionPlayEffects(this, m);
+    }
+
+    for (size_t i = 0; i < nonActivePlayer->field.size(); i++) {
+        TriggerMinion *tm = dynamic_cast<TriggerMinion*>(nonActivePlayer->field[i]);
+        if (tm) {
+            tm->onMinionPlayEffects(this, m);
+        }
     }
 }
 
@@ -272,7 +353,7 @@ void GameController::drawBoard() {
         displayCards.push_back(CARD_TEMPLATE_BORDER);
     }
     displayCards.push_back(CARD_TEMPLATE_EMPTY);
-    displayCards.push_back(p2->asPortrait());
+    displayCards.push_back(p2->asPortrait(p2 == activePlayer));
     displayCards.push_back(CARD_TEMPLATE_EMPTY);
     if (p2->graveyard.size() > 0) {
         displayCards.push_back(p2->graveyard.top()->asCardTemplate());
@@ -315,7 +396,7 @@ void GameController::drawBoard() {
         displayCards.push_back(CARD_TEMPLATE_BORDER);
     }
     displayCards.push_back(CARD_TEMPLATE_EMPTY);
-    displayCards.push_back(p1->asPortrait());
+    displayCards.push_back(p1->asPortrait(p1 == activePlayer));
     displayCards.push_back(CARD_TEMPLATE_EMPTY);
     if (p1->graveyard.size() > 0) {
         displayCards.push_back(p1->graveyard.top()->asCardTemplate());

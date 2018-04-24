@@ -5,5 +5,9 @@ FireElemental::FireElemental(Player *p, string name, int cost, int dmg, int maxH
 
 
 void FireElemental::onMinionPlayEffects(GameController *con, Minion *m) {
+    // Only target enemy minions
+    if (player->isFriendlyMinion(m)) {
+        return;
+    }
     m->receiveDamage(1);
 }

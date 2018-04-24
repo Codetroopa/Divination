@@ -19,7 +19,14 @@ int main(int argc, char *argv[]) {
     cin >> player2;
     cout << "Using default decks..." << endl << endl;
 
+    // testing mode
+    bool testingMode = false;
+    if (argc > 1) {
+        if (strncmp(argv[1], "--testing", 10) == 0) {
+            testingMode = true;
+        }
+    }
 
-    GameController con(player1, player2, "default.deck", "default.deck");
+    GameController con(player1, player2, "default.deck", "default.deck", testingMode);
     con.play();
 }

@@ -35,6 +35,7 @@ class Minion : public Card {
     void resetStats();
     bool attack(Minion *other);
     bool attack(Player *other);
+    bool attacked();
     void receiveDamage(int amount);
     void endOfTurnEffects(GameController *con);
     void startOfTurnEffects(GameController *con);

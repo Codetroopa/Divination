@@ -36,6 +36,10 @@ bool Minion::attack(Player *p) {
     return true;
 }
 
+bool Minion::attacked() {
+    return hasAttacked;
+}
+
 int Minion::calculateDamage() {
     if (latestEnchantment) {
         return latestEnchantment->getAttack(dmg);
@@ -55,6 +59,9 @@ void Minion::addEnchantment(BaseEnchantment *b) {
 
 
 void Minion::receiveDamage(int amount) {
+    if (dead) {
+        return;
+    }
     hp -= amount;
     if (hp <= 0) {
         die();

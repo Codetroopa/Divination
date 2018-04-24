@@ -6,6 +6,7 @@
 #include "Spell.h"
 #include "GameController.h"
 #include "BaseEnchantment.h"
+#include "AbilityMinion.h"
 
 using namespace std;
 
@@ -21,7 +22,7 @@ Player::Player(string name, int owner, string filePath) {
     this->ritual = NULL;
 
     // Draw beginning cards from deck and add to hand
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 4; i++) {
         drawCard();
     }
 }
@@ -122,6 +123,60 @@ bool Player::playCard(GameController *con, int i, Minion *other) {
     return true;
 }
 
+bool Player::useMinion(GameController *con, int i) {
+    if (!validMinionIndex(i)) {
+        cout << "Error: You don't have a minion at position " << i << endl;
+        return false;
+    }
+
+    AbilityMinion *am = dynamic_cast<AbilityMinion*>(field[i - 1]);
+    if (am) {
+        if (am->attacked()) {
+            cout << "The selected minion has already made a move this turn!" << endl;
+            return false;
+        }
+        if (am->targetsMinion()) {
+            cout << "This minion's ability requires a target" << endl;
+            return false;
+        }
+        bool success = am->useAbility(con);
+        if (!success) {
+            cout << "This ability can't be used in the current board state!" << endl;
+        }
+        return success;
+    } else {
+        cout << "This minion does not have an ability to use!" << endl;
+        return false;
+    }
+}
+
+bool Player::useMinion(GameController *con, int i, Minion *other) {
+    if (!validMinionIndex(i)) {
+        cout << "Error: You don't have a minion at position " << i << endl;
+        return false;
+    }
+
+    AbilityMinion *am = dynamic_cast<AbilityMinion*>(field[i - 1]);
+    if (am) {
+        if (am->attacked()) {
+            cout << "The selected minion has already made a move this turn!" << endl;
+            return false;
+        }
+        if (!am->targetsMinion()) {
+            cout << "This minion's ability doesn't require a target" << endl;
+            return false;
+        }
+        bool success = am->useAbility(con, other);
+        if (!success) {
+            cout << "This ability can't be used on that target!" << endl;
+        }
+        return success;
+    } else {
+        cout << "This minion does not have an ability to use!" << endl;
+        return false;
+    }
+}
+
 void Player::receiveDamage(int dmg) {
     hp -= dmg;
     if (hp <= 0) {
@@ -178,6 +233,16 @@ void Player::enchantAllFriendlyMinions(BaseEnchantment *e) {
     }
 }
 
+bool Player::isFriendlyMinion(Minion *other) {
+    for (size_t i = 0; i < field.size(); i++) {
+        if (field[i] == other) {
+            return true;
+        }
+    }
+    return false;
+}
+
+
 // These are non-targetted spells
 bool Player::playSpell(GameController *con, Spell *s, int idx) {
     if (s->getName() == "Recharge") {
@@ -233,6 +298,10 @@ bool Player::validCardIndex(int i) {
     return hand.size() >= i && i <= 5 && i > 0;
 }
 
-card_template_t Player::asPortrait() {
-    return display_player_card(ownerNumber, name, hp, magic);
+bool Player::validMinionIndex(int i) {
+    return field.size() >= i && i <= 5 && i > 0;
+}
+
+card_template_t Player::asPortrait(bool myTurn) {
+    return display_player_card(ownerNumber, name, hp, magic, myTurn);
 }

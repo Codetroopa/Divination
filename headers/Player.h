@@ -27,6 +27,7 @@ class Player {
 
     // private methods
     bool validCardIndex(int i);
+    bool validMinionIndex(int i);
     void playRitual(Ritual *r, int i);
     bool playSpell(GameController *con, Spell *r, int i);
     bool playSpell(GameController *con, Spell *r, int idx, Minion *m);
@@ -43,16 +44,19 @@ class Player {
     void drawCard();
     bool playCard(GameController *con, int i);                   // Play a card from hand at index i.
     bool playCard(GameController *con, int i, Minion *other);    // Play a card from hand at index i. Target given Minion
+    bool useMinion(GameController *con, int i);                  // Use minion i's ability.
+    bool useMinion(GameController *con, int i, Minion *other);   // Use minion i's ability targetting Minion.
+    bool isFriendlyMinion(Minion *other);
     void receiveDamage(int dmg);
     void addToDeckFront(Card *c);
     void gainMagic(int amount);
     void regenerateMagic();
     void restoreHealth(int amount);
     void enchantAllFriendlyMinions(BaseEnchantment *e);
-    card_template_t asPortrait();           // Display as a card_template_t
+    card_template_t asPortrait(bool myTurn);           // Display as a card_template_t
 };
 
 const int DEFAULT_HP = 20;
-const int DEFAULT_MAGIC = 3;
+const int DEFAULT_MAGIC = 1;
 
 #endif

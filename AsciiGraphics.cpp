@@ -66,7 +66,7 @@ card_template_t display_enchantment_attack_defence(std::string name,int cost,std
                                      name,cost,desc,attack,defence);
 }
 
-card_template_t display_player_card(int player_num,std::string name,int life,int mana) {
+card_template_t display_player_card(int player_num,std::string name,int life,int mana, bool playersTurn) {
   std::ostringstream oss;
   card_template_t out = player_num == 2 ? PLAYER_1_TEMPLATE : PLAYER_2_TEMPLATE;
   prepare_for_replace(out);
@@ -77,6 +77,11 @@ card_template_t display_player_card(int player_num,std::string name,int life,int
     for (int i=0;i<extend/2-1;i++) oss << ' ';
     oss << centred_name;
     centred_name = oss.str();
+  }
+  if (playersTurn) {
+      replace_text_left(out, 'T', "[Your Turn]");
+  } else {
+      replace_text_left(out, 'T', "           ");
   }
   replace_text_left(out,'N',centred_name);
   oss.str("");
@@ -281,7 +286,7 @@ card_template_t PLAYER_1_TEMPLATE =
        "┃                               ┃",
        "┃                               ┃",
        "┃         ~NNNNNNNNNNN~         ┃",
-       "┃                               ┃",
+       "┃         ~TTTTTTTTTTT~         ┃",
        "┃                               ┃",
        "┃                               ┃",
        "┃                               ┃",
@@ -293,7 +298,7 @@ card_template_t PLAYER_1_TEMPLATE =
        "|                               |",
        "|                               |",
        "|         ~NNNNNNNNNNN~         |",
-       "|                               |",
+       "|         ~TTTTTTTTTTT~         |",
        "|                               |",
        "|                               |",
        "|                               |",
@@ -310,7 +315,7 @@ card_template_t PLAYER_2_TEMPLATE =
        "┃                               ┃",
        "┃                               ┃",
        "┃                               ┃",
-       "┃                               ┃",
+       "┃          ~TTTTTTTTTTT~        ┃",
        "┃          ~NNNNNNNNNNN~        ┃",
        "┃                               ┃",
        "┃                               ┃",
@@ -322,7 +327,7 @@ card_template_t PLAYER_2_TEMPLATE =
        "|                               |",
        "|                               |",
        "|                               |",
-       "|                               |",
+       "|          ~TTTTTTTTTTT~        |",
        "|          ~NNNNNNNNNNN~        |",
        "|                               |",
        "|                               |",

@@ -4,5 +4,5 @@ TriggerMinion::TriggerMinion(Player *p, string name, int cost, int dmg, int maxH
     : Minion::Minion(p, name, cost, dmg, maxHp), description(desc) { }
 
 card_template_t TriggerMinion::asCardTemplate() {
-    return display_minion_triggered_ability(name, cost, calculateDamage(), maxHp, description);
+    return display_minion_triggered_ability(name, cost, calculateDamage(), hp, description);
 }

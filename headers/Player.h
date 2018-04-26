@@ -21,7 +21,6 @@ class Player {
     int maxHp;
     int hp;
     int maxMagic;
-    int magic;
     string name;
     Deck *deck;
 
@@ -35,6 +34,7 @@ class Player {
     void addToField(Minion *m, int position);
 
     public:
+    int magic;
     vector<Card *> hand;                    // This Player's cards in hand
     vector<Minion *> field;                 // This Player's minions in the field, and still alive
     stack<Minion *> graveyard;              // This Player's minions that have been killed

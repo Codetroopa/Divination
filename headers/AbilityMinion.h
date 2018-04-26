@@ -19,6 +19,9 @@ class AbilityMinion : public Minion {
     virtual bool useAbility(GameController *con, Minion *m) { return false; }
     virtual bool useAbility(GameController *con) { return false; }
     virtual bool targetsMinion() {return true; }
+    bool isSilenced();
+    bool enoughMagic();
+    int getActivationCost();
 
     card_template_t asCardTemplate();
 };

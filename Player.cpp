@@ -131,6 +131,13 @@ bool Player::useMinion(GameController *con, int i) {
 
     AbilityMinion *am = dynamic_cast<AbilityMinion*>(field[i - 1]);
     if (am) {
+        if (!am->enoughMagic()) {
+            cout << "Not enough magic to cast this ability!" << endl;
+        }
+        if (am->isSilenced()) {
+            cout << "This minion is Silenced! It can't use abilities" << endl;
+            return false;
+        }
         if (am->attacked()) {
             cout << "The selected minion has already made a move this turn!" << endl;
             return false;
@@ -143,6 +150,7 @@ bool Player::useMinion(GameController *con, int i) {
         if (!success) {
             cout << "This ability can't be used in the current board state!" << endl;
         }
+        magic -= am->getActivationCost();
         return success;
     } else {
         cout << "This minion does not have an ability to use!" << endl;
@@ -158,6 +166,13 @@ bool Player::useMinion(GameController *con, int i, Minion *other) {
 
     AbilityMinion *am = dynamic_cast<AbilityMinion*>(field[i - 1]);
     if (am) {
+        if (!am->enoughMagic()) {
+            cout << "Not enough magic to cast this ability!" << endl;
+        }
+        if (am->isSilenced()) {
+            cout << "This minion is Silenced! It can't use abilities" << endl;
+            return false;
+        }
         if (am->attacked()) {
             cout << "The selected minion has already made a move this turn!" << endl;
             return false;
@@ -170,6 +185,7 @@ bool Player::useMinion(GameController *con, int i, Minion *other) {
         if (!success) {
             cout << "This ability can't be used on that target!" << endl;
         }
+        magic -= am->getActivationCost();
         return success;
     } else {
         cout << "This minion does not have an ability to use!" << endl;

@@ -133,6 +133,7 @@ bool Player::useMinion(GameController *con, int i) {
     if (am) {
         if (!am->enoughMagic()) {
             cout << "Not enough magic to cast this ability!" << endl;
+            return false;
         }
         if (am->isSilenced()) {
             cout << "This minion is Silenced! It can't use abilities" << endl;
@@ -168,6 +169,7 @@ bool Player::useMinion(GameController *con, int i, Minion *other) {
     if (am) {
         if (!am->enoughMagic()) {
             cout << "Not enough magic to cast this ability!" << endl;
+            return false;
         }
         if (am->isSilenced()) {
             cout << "This minion is Silenced! It can't use abilities" << endl;

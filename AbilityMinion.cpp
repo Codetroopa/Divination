@@ -5,7 +5,7 @@ AbilityMinion::AbilityMinion(Player *p, string name, int cost, int dmg, int maxH
 
 bool AbilityMinion::isSilenced() {
     if (!latestEnchantment) {
-        return true;
+        return false;
     } else {
         return latestEnchantment->isSilenced(false);
     }
@@ -20,6 +20,7 @@ int AbilityMinion::getActivationCost() {
 }
 
 bool AbilityMinion::enoughMagic() {
+    cout << "Ability cost: " << getActivationCost() << endl;
     return player->magic >= getActivationCost();
 }
 

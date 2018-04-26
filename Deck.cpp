@@ -46,8 +46,6 @@ void Deck::addToFront(Card *c) {
 
 // Ctor to setup deck from a filename, using default deck otherwise.
 Deck::Deck(string deckFilePath, Player *p) {
-    // init randomness
-    srand(time(NULL));
     string cardName;
     fstream file(deckFilePath);
 

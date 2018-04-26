@@ -1,9 +1,12 @@
 #include "GameController.h"
 #include "AsciiGraphics.h"
+#include <time.h>
 #include <iostream>
 using namespace std;
 
 int main(int argc, char *argv[]) {
+    // init randomnes
+    srand(time(NULL));
     string player1;
     string player2;
 

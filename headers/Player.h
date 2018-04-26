@@ -57,6 +57,6 @@ class Player {
 };
 
 const int DEFAULT_HP = 20;
-const int DEFAULT_MAGIC = 1;
+const int DEFAULT_MAGIC = 2;
 
 #endif

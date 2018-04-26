@@ -94,6 +94,7 @@ void GameController::play() {
 		} else if (cmd == "end") {
             nextTurn();
             drawBoard();
+            drawHand();
 		} else if (cmd == "quit") {
             break;
 		} else if (cmd == "draw") { // -testing only

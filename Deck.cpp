@@ -87,7 +87,7 @@ Deck::Deck(string deckFilePath, Player *p) {
                 1, "", "+2", "+2"));
         } else if (cardName == "Colossal Strength") {
             cards.push_back(new EnchantmentCard(new MultStatsEnchantment(NULL, 2, 2), cardName,
-                4, "", "x2", "x2"));
+                3, "", "x2", "x2"));
         } else if (cardName == "Magic Fatigue") {
             cards.push_back(new EnchantmentCard(new MagicFatigueEnchantment(NULL, 2), cardName, 0,
                 "Enchanted minion's activated abilities cost 2 more", "", ""));

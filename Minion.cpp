@@ -19,8 +19,10 @@ bool Minion::attack(Minion *other) {
         cout << "The selected minion has already made a move this turn!" << endl;
         return false;
     }
+    // We have to calculate before attacking in case effects resolve (like dying)
+    int damageTaken = other->calculateDamage();
     other->receiveDamage(calculateDamage());
-    receiveDamage(other->calculateDamage());
+    receiveDamage(damageTaken);
     hasAttacked = true;
     return true;
 }

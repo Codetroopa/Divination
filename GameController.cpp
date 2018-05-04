@@ -118,6 +118,7 @@ void GameController::play() {
                 success = makeAttack(i);
                 if (success) {
                     drawBoard();
+                    drawHand();
                 }
             } else {
                 if (!(iss >> j)) {
@@ -128,6 +129,7 @@ void GameController::play() {
                 success = makeAttack(i, j);
                 if (success) {
                     drawBoard();
+                    drawHand();
                 }
             }
 		} else if (cmd == "play") {
@@ -148,6 +150,7 @@ void GameController::play() {
                         onMinionPlayed(activePlayer->field.back());
                     }
                     drawBoard();
+                    drawHand();
                 }
             } else {
                 if (!(iss >> p)) {
@@ -185,6 +188,7 @@ void GameController::play() {
                 success = activePlayer->playCard(this, i, other);
                 if (success) {
                     drawBoard();
+                    drawHand();
                 }
             }
 		} else if (cmd == "use") {
@@ -200,6 +204,7 @@ void GameController::play() {
                 success = activePlayer->useMinion(this, i);
                 if (success) {
                     drawBoard();
+                    drawHand();
                 }
             } else {
                 if (!(iss >> p)) {
@@ -233,6 +238,7 @@ void GameController::play() {
                 success = activePlayer->useMinion(this, i, other);
                 if (success) {
                     drawBoard();
+                    drawHand();
                 }
             }
 		} else if (cmd == "hand") {

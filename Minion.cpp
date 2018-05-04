@@ -50,6 +50,7 @@ int Minion::calculateDamage() {
 }
 
 void Minion::addEnchantment(BaseEnchantment *b) {
+    cout << "Adding enchantment: " << b << endl;
     if (latestEnchantment) {
         b->prev = latestEnchantment;
     }

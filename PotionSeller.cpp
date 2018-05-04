@@ -6,5 +6,5 @@ PotionSeller::PotionSeller(Player *p, string name, int cost, int dmg, int maxHp,
 
 
 void PotionSeller::endOfTurnEffects(GameController *con) {
-    player->enchantAllFriendlyMinions(new AddStatsEnchantment(NULL, 0, 1));
+    player->enchantAllFriendlyMinions(NULL);
 }

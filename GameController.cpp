@@ -170,13 +170,17 @@ void GameController::play() {
                         continue;
                     }
                     other = activePlayer->field[j - 1];
-                } else {
+                } else if (p == nonActivePlayer->ownerNumber) {
                     if (nonActivePlayer->field.size() < j || j <= 0) {
                         cout << "Error: Target Minion doesn't exist at index " << j << endl;
                         cout << ">";
                         continue;
                     }
                     other = nonActivePlayer->field[j - 1];
+                } else {
+                    cout << "Error: Invalid target player " << p << endl;
+                    cout << ">";
+                    continue;
                 }
                 success = activePlayer->playCard(this, i, other);
                 if (success) {

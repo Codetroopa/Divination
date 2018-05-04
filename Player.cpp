@@ -6,6 +6,7 @@
 #include "Spell.h"
 #include "GameController.h"
 #include "BaseEnchantment.h"
+#include "AddStatsEnchantment.h"
 #include "AbilityMinion.h"
 
 using namespace std;
@@ -247,7 +248,7 @@ void Player::playEnchantment(EnchantmentCard *e, Minion *m, int idx) {
 
 void Player::enchantAllFriendlyMinions(BaseEnchantment *e) {
     for (size_t i = 0; i < field.size(); i++) {
-        field[i]->addEnchantment(e);
+        field[i]->addEnchantment(new AddStatsEnchantment(NULL, 0, 1));
     }
 }
 

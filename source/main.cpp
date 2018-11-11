@@ -2,13 +2,16 @@
 #include "AsciiGraphics.h"
 #include <time.h>
 #include <iostream>
+#include <string.h>
 using namespace std;
 
 int main(int argc, char *argv[]) {
     // init randomnes
     srand(time(NULL));
     string player1;
+    string deck1;
     string player2;
+    string deck2;
 
     // display banner
     cout << "Welcome to..." << endl;
@@ -18,9 +21,24 @@ int main(int argc, char *argv[]) {
 
     cout << "Enter Player 1's name:" << endl << ">";
     cin >> player1;
+    cout << "Enter Player 1's deck path (or type default for default deck):" << endl << ">";
+    cin >> deck1;
+    if (deck1 == "default")
+    {
+        deck1 = "default.deck";
+        cout << "Using default deck..." << endl << endl;
+    }
+
     cout << "Enter Player 2's name:" << endl << ">";
     cin >> player2;
-    cout << "Using default decks..." << endl << endl;
+    cout << "Enter Player 2's deck path (or type default for default deck):" << endl << ">";
+    cin >> deck2;
+    if (deck2 == "default")
+    {
+        deck2 = "default.deck";
+        cout << "Using default deck..." << endl << endl;
+    }
+    
 
     // testing mode
     bool testingMode = false;
@@ -30,6 +48,6 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    GameController con(player1, player2, "default.deck", "default.deck", testingMode);
+    GameController con(player1, player2, deck1, deck2, testingMode);
     con.play();
 }

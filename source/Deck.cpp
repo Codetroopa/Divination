@@ -47,13 +47,21 @@ void Deck::addToFront(Card *c) {
 // Ctor to setup deck from a filename, using default deck otherwise.
 Deck::Deck(string deckFilePath, Player *p) {
     string cardName;
-    fstream file(deckFilePath);
+    ifstream file(deckFilePath);
+
+    if (!file)
+    {
+        cout << "Invalid path to a decklist: " << deckFilePath << endl;
+        exit(-1);
+    }
 
     // setup ownership
     owner = p;
 
     // get cards from deck name
     while (getline(file, cardName)) {
+        cardName.erase(std::remove(cardName.begin(), cardName.end(), '\n'), cardName.end());
+        cardName.erase(std::remove(cardName.begin(), cardName.end(), '\r'), cardName.end());
         if (cardName == "Air Elemental") {
             cards.push_back(new Minion(p, cardName, 0, 1, 1));
         } else if (cardName == "Earth Elemental") {
@@ -107,7 +115,7 @@ Deck::Deck(string deckFilePath, Player *p) {
         } else if (cardName == "Blizzard") {
             cards.push_back(new Spell(p, cardName, 3, "Deal 2 damage to all enemy minions"));
         } else {
-            cout << "The fuck you doing mate. This card doesn't exist" << endl;
+            cout << "The hell you doing mate. This card doesn't exist: " << cardName << endl;
             exit(69);
         }
     }

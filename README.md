@@ -3,7 +3,13 @@
 This game started off as a weekend long Game Jam project while I was interning at Square. I decided to spend a couple more weeks to flesh out some more functionality for the game.
 
 
-Divination is a fantasy card game played on the terminal. To play, clone this repo and run the pre-compiled `divination.out` file.
+Divination is a fantasy card game played on the terminal. To play, clone this repo and compile the source code. You can do so with `g++`:
+
+```
+g++ -o divination.out -g source/*.cpp -Iheaders -std=c++11
+```
+
+Now, simply run `divination.out` from the command line and it will load the game. Cloning this repo should come with a `default.deck` file that contains a list of available cards.
 
 ## Gameplay
 
@@ -29,6 +35,19 @@ Here is a quick rundown of the rules / flow of the game:
 - At the beginning of each turn (except the first), the active Player gains 1 magic and draws 1 card (if they can).
 - A turn consists of any number of valid commands and lasts until the active Player types "end".
 - The first Player to 0 health loses.
+  
+### Keywords
+**Magic**: The resource used to play cards.
+
+**Graveyard**: Contains the most recent `Minion` that died for each Player.
+
+**Deathrattle**: An effect that gets triggered when that specific `Minion` dies.
+
+**Charges**: The number of activations remaining for a `Ritual`.
+
+**Resurrect**: Bring a `Minion` back to life with its base stats.
+
+**Summon**: Create a `Minion` and put it immediately into play (as long as there is room on the board).
 
 ### The Board
 ![An example Divination board](https://github.com/codetroopa/divination/raw/master/screenshots/example_board.png)
@@ -47,16 +66,3 @@ Here is a quick rundown of the rules / flow of the game:
 **Spells**: One-time use cards that carry out the action described in its text.
 
 **Enchantments**: A card that modifies the stats or capabilities of the selected `Minion`. Any `Enchantment` can be cast on either Player's `Minion`, unless indicated otherwise. `Enchantments` are applied in the same order they were played (if/when order matters).
-
-### Keywords
-**Magic**: The resource used to play cards.
-
-**Graveyard**: Contains the most recent `Minion` that died for each Player.
-
-**Deathrattle**: An effect that gets triggered when that specific `Minion` dies.
-
-**Charges**: The number of activations remaining for a `Ritual`.
-
-**Resurrect**: Bring a `Minion` back to life with its base stats.
-
-**Summon**: Create a `Minion` and put it immediately into play (as long as there is room on the board).

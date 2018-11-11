@@ -31,18 +31,18 @@ Here is a quick rundown of the rules / flow of the game:
 - The first Player to 0 health loses.
 
 ### The Board
-![An example Divination board](https://imgur.com/tingzXH.png)
+![An example Divination board](https://github.com/codetroopa/divination/raw/master/screenshots/example_board.png)
 
 
 ### Card Types
 
 **Minions**: The primary type of cards in Divination to defeat your opponent. Each turn (including the turn they are first played), a `Minion` can either attack an opposing `Minion`, or attack the opposing Player. When attacking another `Minion`, each `Minion` deals its damage to each other and is removed to the `Graveyard` if its health falls to 0 or below.
 
-![Minion](https://imgur.com/hOx99S6.png)
+![Minion](https://github.com/codetroopa/divination/raw/master/screenshots/example_minion.png)
 
 **Rituals**: A special kind of card that has an inital cost, and an activation cost each time its special ability is triggered. Each player has room for one `Ritual` at a time. Playing a `Ritual` when one was already in play removes the older one.
 
-![Ritual](https://imgur.com/8VEqTTh.png)
+![Ritual](https://github.com/codetroopa/divination/raw/master/screenshots/example_ritual.png)
 
 **Spells**: One-time use cards that carry out the action described in its text.
 
